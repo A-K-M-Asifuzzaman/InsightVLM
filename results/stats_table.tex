@@ -1,0 +1,16 @@
+\begin{table}
+\caption{Accuracy on real test charts. 95\% bootstrap CIs; $p$ is an exact McNemar test against the best system on the same charts.}
+\label{tab:real}
+\begin{tabular}{llrrlrl}
+\toprule
+system & view & n & accuracy & CI & macro_f1 & p \\
+\midrule
+InsightVLM ensemble (ours) & matplotlib & 1192 & 0.867 & [0.846, 0.886] & 0.776 & -- \\
+Qwen3-VL-8B-Instruct (zero-shot) & matplotlib & 1192 & 0.468 & [0.439, 0.496] & 0.400 & 1.4e-108 \\
+Qwen2.5-VL-7B-Instruct (zero-shot) & matplotlib & 1192 & 0.411 & [0.383, 0.440] & 0.296 & 1.7e-126 \\
+Qwen2.5-VL-3B-Instruct (zero-shot) & matplotlib & 1192 & 0.306 & [0.281, 0.332] & 0.198 & 5.5e-178 \\
+InsightVLM ensemble (ours) & plotly & 1192 & 0.857 & [0.836, 0.877] & 0.760 & -- \\
+InsightVLM ensemble (ours) & vega & 1192 & 0.716 & [0.690, 0.741] & 0.614 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}

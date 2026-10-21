@@ -1,0 +1,92 @@
+[
+  {
+    "system": "InsightVLM ensemble (ours)",
+    "view": "matplotlib",
+    "n": 1192,
+    "accuracy": 0.8666107382550335,
+    "ci95": [
+      0.8464765100671141,
+      0.8859060402684564
+    ],
+    "macro_f1": 0.7756972580218222,
+    "vs_best": "InsightVLM ensemble (ours)",
+    "best_only_right": 0,
+    "this_only_right": 0,
+    "mcnemar_p": 1.0
+  },
+  {
+    "system": "Qwen3-VL-8B-Instruct (zero-shot)",
+    "view": "matplotlib",
+    "n": 1192,
+    "accuracy": 0.46812080536912754,
+    "ci95": [
+      0.438758389261745,
+      0.49580536912751677
+    ],
+    "macro_f1": 0.39959125611858476,
+    "vs_best": "InsightVLM ensemble (ours)",
+    "best_only_right": 511,
+    "this_only_right": 36,
+    "mcnemar_p": 1.4283730052154532e-108
+  },
+  {
+    "system": "Qwen2.5-VL-7B-Instruct (zero-shot)",
+    "view": "matplotlib",
+    "n": 1192,
+    "accuracy": 0.4110738255033557,
+    "ci95": [
+      0.3825503355704698,
+      0.4395973154362416
+    ],
+    "macro_f1": 0.29590715682722085,
+    "vs_best": "InsightVLM ensemble (ours)",
+    "best_only_right": 580,
+    "this_only_right": 37,
+    "mcnemar_p": 1.650230401428681e-126
+  },
+  {
+    "system": "Qwen2.5-VL-3B-Instruct (zero-shot)",
+    "view": "matplotlib",
+    "n": 1192,
+    "accuracy": 0.3062080536912752,
+    "ci95": [
+      0.28104026845637586,
+      0.33221476510067116
+    ],
+    "macro_f1": 0.19847693947602005,
+    "vs_best": "InsightVLM ensemble (ours)",
+    "best_only_right": 685,
+    "this_only_right": 17,
+    "mcnemar_p": 5.504434872028287e-178
+  },
+  {
+    "system": "InsightVLM ensemble (ours)",
+    "view": "plotly",
+    "n": 1192,
+    "accuracy": 0.8565436241610739,
+    "ci95": [
+      0.8355704697986577,
+      0.8766778523489933
+    ],
+    "macro_f1": 0.7595408696852407,
+    "vs_best": "InsightVLM ensemble (ours)",
+    "best_only_right": 0,
+    "this_only_right": 0,
+    "mcnemar_p": 1.0
+  },
+  {
+    "system": "InsightVLM ensemble (ours)",
+    "view": "vega",
+    "n": 1192,
+    "accuracy": 0.7156040268456376,
+    "ci95": [
+      0.6904362416107382,
+      0.7407718120805369
+    ],
+    "macro_f1": 0.6143501951173922,
+    "vs_best": "InsightVLM ensemble (ours)",
+    "best_only_right": 0,
+    "this_only_right": 0,
+    "mcnemar_p": 1.0
+  }
+]

@@ -1,0 +1,63 @@
+\chapter{Conclusion and Future Work}
+\label{ch:conclusion}
+
+\section{Summary}
+
+This thesis set out to make charts carry verified statistical findings, and to test
+whether a model can learn to state those findings from the image alone. We built
+InsightVLM-20K, 20{,}000 charts in 26 chart types whose labels are issued only when a
+named statistical test confirms them on exactly the plotted data, with 6{,}083 charts
+from 654 real public tables held in source-disjoint splits and a supplementary pool of
+2{,}545 further real training charts.
+
+\begin{description}[leftmargin=1.2cm,style=nextline,font=\bfseries]
+  \item[RQ1.] A fine-tuned CNN ensemble identifies the finding of a real chart with
+  0.867 accuracy (95\% CI $[0.846, 0.886]$) and of a synthetic chart with 0.999, without
+  a supplied question. Zero-shot vision--language models reach at most 0.468.
+  \item[RQ2.] A deterministic pipeline on the data table is right 99.95\% of the time and
+  exact. A QLoRA-tuned generative VLM names the finding 80\% of the time but cites
+  correct numbers only 13.8\% of the time.
+  \item[RQ3.] The model's Grad-CAM peak falls inside a verified evidence box on 52.4\% of real
+  charts against 43.9\% for a random point: grounded beyond chance for time series, group
+  comparisons and relationships, but not for distributions.
+  \item[RQ4.] Real data costs 13 points relative to synthetic data. A plotting library
+  never seen in training costs a further 15 points (0.716), reduced but not removed by
+  training on charts drawn by more than one library.
+  \item[RQ5.] Accuracy should be reported on real charts, across more than one renderer,
+  against a pixel-free floor (0.288) and a data-oracle ceiling (0.9995), with selection
+  on validation only; and trained models must be tested for shortcuts directly, because
+  a data audit missed the one that mattered.
+\end{description}
+
+Along the way we found and removed a rendering leak that had inflated accuracy on
+real time-series charts to 0.94--0.96 from a true 0.31--0.41, and corrected an earlier result that had been
+selected on the test set. The final numbers are lower than the earliest drafts reported,
+and they are the ones we can defend.
+
+\section{Deliverables}
+
+\begin{itemize}[leftmargin=1.3em]
+  \item InsightVLM-20K version 2, with datasheet, bias audit, the supplementary real pool,
+  and Plotly and Vega-Lite re-renders of the real test charts.
+  \item Trained models and the deployed ensemble.
+  \item An interactive tester (Appendix~\ref{app:tester}) that runs uploaded charts
+  through the evaluated pipeline.
+  \item The full build, training and evaluation code, from which every number in this
+  thesis is regenerated.
+\end{itemize}
+
+\section{Future Work}
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item \textbf{Complete the human baseline} with at least three independent annotators,
+  and report human accuracy and inter-annotator agreement on the same 200 charts.
+  \item \textbf{Close the unseen-renderer gap} with more rendering libraries in training
+  (Excel-style, ggplot2, D3) and with charts taken from real documents.
+  \item \textbf{Re-train the generative model on version 2} with a larger backbone and
+  the full training set, and optimise it for numeric fidelity, not only class accuracy.
+  \item \textbf{Multi-label findings}, so a chart can show a trend and an anomaly at once.
+  \item \textbf{More real data for rare classes} (heavy tails, seasonality, left skew,
+  inverted-U relationships), which are also the weakest classes.
+  \item \textbf{Seed variance}: repeat each configuration with several seeds to report
+  training variability alongside test-set uncertainty.
+\end{enumerate}

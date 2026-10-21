@@ -1,0 +1,30 @@
+Group,Paper,Year,Venue,Method,Dataset (name / size),Reported accuracy,Limitations (for OUR gap),Link/DOI,Read status,Notes
+"CAUTION","THE THREE COLUMNS 'Reported accuracy'; 'Dataset'; 'Venue' ARE DELIBERATELY BLANK. Fill them ONLY from the actual paper. Do not trust any pre-filled number you did not verify yourself.",,,,,,,,,
+,,,,,,,,,,
+"G1. Template-generated chart QA","FigureQA",2018,VERIFY,"Synthetic figures; yes/no and comparison questions generated from templates",VERIFY,VERIFY,"Template questions only; no statistical finding label; synthetic figures only",https://arxiv.org/abs/1710.07300,Not read,"Foundational. Establishes chart QA as a task."
+"G1. Template-generated chart QA","DVQA",2018,VERIFY,"Bar charts only; template question generation; dynamic dictionary decoding",VERIFY,VERIFY,"Bar charts only; templated questions; no finding label",https://arxiv.org/abs/1801.08163,Not read,
+"G1. Template-generated chart QA","PlotQA",2020,VERIFY,"Scientific plots; template + crowdsourced questions; hybrid pipeline",VERIFY,VERIFY,"Question-driven; answers are values not findings",https://arxiv.org/abs/1909.00997,Not read,
+"G1. Template-generated chart QA","LEAF-QA",2020,VERIFY,"Chart QA over figures with structured reasoning",VERIFY,VERIFY,"Question-driven",VERIFY,Not read,"Verify this exists before citing."
+,,,,,,,,,,
+"G2. Real-world chart QA","ChartQA",2022,VERIFY,"Real charts (Statista/Pew); human + machine authored questions",VERIFY,VERIFY,"Human questions; no verified statistical statement; small scale",https://arxiv.org/abs/2203.10244,Not read,"Most-cited benchmark. Anchor of the field."
+"G2. Real-world chart QA","ChartQA-X",2026,VERIFY,"Chart QA with generated natural-language explanations",VERIFY,VERIFY,"Explanation justifies a SUPPLIED question; nothing verifies the numbers inside it are true",VERIFY (from your Assignment 1),Not read,"CLOSEST TO OURS. Read carefully."
+,,,,,,,,,,
+"G3. Chart-to-structure pretraining","Pix2Struct",2023,VERIFY,"Screenshot parsing pretraining; variable-resolution inputs",VERIFY,VERIFY,"Pretraining objective; no statistical reasoning",https://arxiv.org/abs/2210.03347,Not read,
+"G3. Chart-to-structure pretraining","MatCha",2023,VERIFY,"Math reasoning + chart derendering pretraining",VERIFY,VERIFY,"Improves QA; no finding-level supervision",https://arxiv.org/abs/2212.09662,Not read,
+"G3. Chart-to-structure pretraining","DePlot",2023,VERIFY,"Chart-to-table translation then LLM reasoning",VERIFY,VERIFY,"Two-stage; reasoning delegated to LLM; no verified ground truth for the claim",https://arxiv.org/abs/2212.10505,Not read,"Relevant: our oracle is the idealised version of this."
+"G3. Chart-to-structure pretraining","UniChart",2023,VERIFY,"Universal chart pretraining, multi-task",VERIFY,VERIFY,"Multi-task but still QA/summary framed",https://arxiv.org/abs/2305.14761,Not read,
+,,,,,,,,,,
+"G4. Instruction-tuned chart VLMs","ChartLlama",2023,VERIFY,"LLM-generated instruction data for chart understanding",VERIFY,VERIFY,"Instructions are LLM-generated; correctness unverified",https://arxiv.org/abs/2311.16483,Not read,
+"G4. Instruction-tuned chart VLMs","ChartInstruct",2024,VERIFY,"Instruction tuning on chart tasks",VERIFY,VERIFY,"Same: generated supervision, unverified",https://arxiv.org/abs/2403.09028,Not read,
+"G4. Instruction-tuned chart VLMs","ChartAssistant",2024,VERIFY,"Chart-domain assistant, multi-stage training",VERIFY,VERIFY,"Descriptive supervision",https://arxiv.org/abs/2401.02384,Not read,
+"G4. Instruction-tuned chart VLMs","ChartX / ChartVLM",2024,VERIFY,"Evaluation suite + model for chart tasks",VERIFY,VERIFY,"Evaluation of QA/description, not verified findings",https://arxiv.org/abs/2402.12185,Not read,
+,,,,,,,,,,
+"G5. Large-scale synthetic chart corpora","ChartGen",2025,VERIFY,"Code-guided synthetic chart generation; image/code pairs",VERIFY,VERIFY,"Task is CODE RECONSTRUCTION; correct code does not imply understanding the data",VERIFY (from your Assignment 1),Not read,"Cited in Assignment 1."
+"G5. Large-scale synthetic chart corpora","ChartNet",2026,VERIFY,"Million-scale multimodal chart dataset; code + tables + summaries + QA",VERIFY,VERIFY,"Supervision is descriptive/QA; no finding label; no evidence grounding",VERIFY (from your Assignment 1),Not read,"Cited in Assignment 1. Largest comparable corpus."
+,,,,,,,,,,
+"G6. General-purpose VLM backbones","LLaVA",2023,VERIFY,"Visual instruction tuning",VERIFY,VERIFY,"General-purpose; weak on dense chart detail",https://arxiv.org/abs/2304.08485,Not read,"Background, not a direct competitor."
+"G6. General-purpose VLM backbones","Qwen2-VL",2024,VERIFY,"Dynamic-resolution multimodal LLM",VERIFY,VERIFY,"General-purpose; we fine-tune this as our generative model",https://arxiv.org/abs/2409.12191,Not read,"WE USE THIS. Must cite correctly."
+"G6. General-purpose VLM backbones","LoRA / QLoRA",2021/2023,VERIFY,"Low-rank adaptation; 4-bit quantised fine-tuning",VERIFY,n/a,"Method paper, not a chart paper",https://arxiv.org/abs/2305.14314,Not read,"WE USE THIS."
+,,,,,,,,,,
+"G7. Dataset documentation & rigour","Datasheets for Datasets",2021,VERIFY,"Documentation standard for datasets",n/a,n/a,"Standard we follow for DATASHEET.md",https://arxiv.org/abs/1803.09010,Not read,"Supports our methodology chapter."
+"G7. Dataset documentation & rigour","Shortcut Learning in Deep Neural Networks",2020,VERIFY,"Analysis of shortcut features in DNNs",n/a,n/a,"Motivates our 11-test bias/shortcut audit",https://arxiv.org/abs/2004.07780,Not read,"Justifies why we audit for shortcuts."

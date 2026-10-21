@@ -1,0 +1,105 @@
+{
+  "classes": [
+    "dist_normal",
+    "dist_right_skew",
+    "dist_left_skew",
+    "dist_bimodal",
+    "dist_heavy_tail",
+    "dist_uniform",
+    "rel_strong_positive",
+    "rel_strong_negative",
+    "rel_none",
+    "rel_nonlinear_monotonic",
+    "rel_nonlinear_nonmonotonic",
+    "rel_heteroscedastic",
+    "ts_increasing",
+    "ts_decreasing",
+    "ts_seasonal",
+    "ts_changepoint",
+    "ts_anomaly_spike",
+    "grp_significant_diff",
+    "grp_no_diff",
+    "grp_dominant_category"
+  ],
+  "policy": "equal weights over full-recipe members (+pool, +renderer aug); alpha tuned on val",
+  "members": [
+    {
+      "name": "r101_384_real50_xp",
+      "ckpt": "results/nb7/r101/r101_384_real50_xp_best.pt",
+      "arch": "resnet101",
+      "size": 384,
+      "weight": 1
+    },
+    {
+      "name": "d121_384_real50_xp",
+      "ckpt": "results/nb7/d121/d121_384_real50_xp_best.pt",
+      "arch": "densenet121",
+      "size": 384,
+      "weight": 1
+    }
+  ],
+  "alpha": 0,
+  "log_prior_shift": [
+    -0.539849,
+    0.47675,
+    -1.492216,
+    0.47675,
+    -0.621862,
+    -1.066548,
+    0.100761,
+    -1.555395,
+    0.47675,
+    -0.604913,
+    -3.438126,
+    0.47675,
+    0.47675,
+    0.47675,
+    -1.512835,
+    -0.40043,
+    0.47675,
+    0.47675,
+    0.47675,
+    0.02761
+  ],
+  "val": {
+    "real_only": 0.8679927667269439,
+    "accuracy": 0.963
+  },
+  "test": {
+    "real_only": 0.8666107382550335,
+    "synthetic_only": 0.9985754985754985,
+    "accuracy": 0.95925
+  },
+  "alternative_all_members": {
+    "members": [
+      "d121_384_real50_x",
+      "d121_384_real50_xp",
+      "r101_384_real50",
+      "r101_384_real50_x",
+      "r101_384_real50_xp",
+      "r50_384_real50",
+      "r50_384_real50_x"
+    ],
+    "test": {
+      "real_only": 0.8615771812080537,
+      "synthetic_only": 0.9992877492877493,
+      "accuracy": 0.95825
+    }
+  },
+  "alternative_greedy": {
+    "members": {
+      "d121_384_real50_x": 1,
+      "r101_384_real50_xp": 1
+    },
+    "alpha": 0,
+    "val": {
+      "real_only": 0.8752260397830018,
+      "accuracy": 0.965
+    },
+    "test": {
+      "real_only": 0.8649328859060402,
+      "synthetic_only": 0.9978632478632479,
+      "accuracy": 0.95825
+    }
+  }
+}

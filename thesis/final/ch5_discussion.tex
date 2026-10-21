@@ -1,0 +1,95 @@
+\chapter{Discussion}
+\label{ch:discussion}
+
+\section{What the Results Mean}
+
+\paragraph{The task is learnable, and not yet solved by general models.} A fine-tuned
+convolutional network names the statistical finding of a real chart correctly almost
+nine times in ten, while the strongest open vision--language model we tested manages
+fewer than one in two without task training. The gap is not about recognising the chart
+type (a rule that uses only chart type reaches 0.288): it is about judging shape, spread
+and change, which is exactly what the verified labels supervise. This supports the
+central premise of the thesis (Chapter~\ref{ch:intro}): a dataset whose labels state
+what the data \emph{shows}, rather than what a question asks, trains a capability that
+question-answering corpora do not.
+
+\paragraph{Most remaining errors are judgements of degree.} The confusions that remain
+(bimodal against right-skewed, heavy-tailed against right-skewed, significant against
+no group difference) are between classes separated by a threshold on a continuous
+statistic. Near a threshold, the chart itself is ambiguous: a right-skewed histogram
+with a shoulder can look bimodal to a person too. Some of these errors are therefore
+likely irreducible from pixels at this resolution; the oracle reaches 0.9995 only
+because it reads the numbers.
+
+\paragraph{Where the training data came from mattered as much as the model.} The three
+largest improvements in this thesis all came from the data rather than from
+architecture: removing the rendering leak (which made the problem honest), adding real
+training charts, and drawing training charts with more than one library. Architecture
+changes within the CNN family moved real accuracy by one to two points.
+
+\section{Lessons from the Rendering Leak}
+
+The leak is the most important methodological lesson of the project, and we report it
+in full because it could affect other synthetic chart datasets.
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item \textbf{A helpful annotation can be a label.} The trend line, change-point line
+  and anomaly circles were added to make charts more informative, and they were drawn
+  only where the finding held. Any rendering step that looks at the label is a potential
+  leak, however natural it seems.
+  \item \textbf{A data audit does not replace a model audit.} Eleven shortcut tests on
+  metadata and pixel statistics all passed while trained models were reading the marks.
+  The failure was only visible by changing the input a trained model sees and measuring
+  what happened.
+  \item \textbf{A class that cannot carry the shortcut is a control.} Seasonal series
+  never carried a mark, and their accuracy did not move when marks were removed. That
+  single class separated ``the models read the marks'' from ``the renders changed''.
+  \item \textbf{High accuracy on an easy-looking class is a warning.} Level-shift charts
+  scored 1.000 with marks and 0.355 without. A perfect score on a class that should be
+  hard deserves suspicion, not celebration.
+\end{enumerate}
+
+\section{Threats to Validity}
+
+\paragraph{Internal validity.} All selection used the validation split, but the
+validation split has only 553 real charts, so choices made on it are noisy; this is why
+the deployed ensemble uses equal weights and why alternatives are reported. The choice to
+deploy the full-recipe models was made after all models were trained; the alternatives
+(averaging every model, 0.862; greedy selection, 0.865) bound its effect at under a
+point. Kaggle probability outputs were checked against a local re-computation (100\%
+prediction agreement) before use.
+
+\paragraph{Construct validity.} The labels encode conventional thresholds
+($|r|>0.7$ for ``strong'', $\varepsilon^2>0.14$ for ``large''). A model that scores well
+has learned these conventions, which are reasonable but not universal. The evidence
+boxes used for grounding mark where the evidence is by construction, not where a human
+would look.
+
+\paragraph{External validity.} Real test charts come from six public repositories and
+are drawn by our renderers, not taken from papers or reports in the wild. The Vega-Lite
+test set measures an unseen renderer, not unseen chart conventions (hand-drawn charts,
+screenshots, charts with annotations of their own). Real class frequencies are uneven,
+and four classes have fewer than 20 real test charts, so their accuracies have wide
+uncertainty.
+
+\paragraph{Statistical conclusion validity.} Every headline accuracy carries a bootstrap
+confidence interval, and system comparisons use paired exact McNemar tests on the same
+charts. Per-class accuracies for rare classes are reported with their $n$ and should not
+be over-read.
+
+\section{Limitations}
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item \textbf{Mostly synthetic.} 69.6\% of the balanced corpus is synthetic; only ten
+  clean inverted-U relationships exist in 719 real tables.
+  \item \textbf{Single label.} Charts showing two findings were excluded, so models will
+  not report a trend and an anomaly together.
+  \item \textbf{The generative model was trained before the leak was found.} Its class
+  accuracy on time series may be inflated; its numeric-fidelity result is not affected.
+  Re-training it on version 2 was outside the compute budget.
+  \item \textbf{No completed human baseline.} The annotation study is deployed but has
+  no valid submission yet (Section~\ref{sec:human}).
+  \item \textbf{Compute.} All training used free T4 GPUs under a weekly quota, which
+  limited the number of models, epochs and seeds; results come from single training runs
+  per configuration, without seed variance.
+\end{enumerate}

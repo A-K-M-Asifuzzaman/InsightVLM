@@ -1,0 +1,313 @@
+{
+  "label_to_id": {
+    "dist_normal": 0,
+    "dist_right_skew": 1,
+    "dist_left_skew": 2,
+    "dist_bimodal": 3,
+    "dist_heavy_tail": 4,
+    "dist_uniform": 5,
+    "rel_strong_positive": 6,
+    "rel_strong_negative": 7,
+    "rel_none": 8,
+    "rel_nonlinear_monotonic": 9,
+    "rel_nonlinear_nonmonotonic": 10,
+    "rel_heteroscedastic": 11,
+    "ts_increasing": 12,
+    "ts_decreasing": 13,
+    "ts_seasonal": 14,
+    "ts_changepoint": 15,
+    "ts_anomaly_spike": 16,
+    "grp_significant_diff": 17,
+    "grp_no_diff": 18,
+    "grp_dominant_category": 19
+  },
+  "id_to_label": {
+    "0": "dist_normal",
+    "1": "dist_right_skew",
+    "2": "dist_left_skew",
+    "3": "dist_bimodal",
+    "4": "dist_heavy_tail",
+    "5": "dist_uniform",
+    "6": "rel_strong_positive",
+    "7": "rel_strong_negative",
+    "8": "rel_none",
+    "9": "rel_nonlinear_monotonic",
+    "10": "rel_nonlinear_nonmonotonic",
+    "11": "rel_heteroscedastic",
+    "12": "ts_increasing",
+    "13": "ts_decreasing",
+    "14": "ts_seasonal",
+    "15": "ts_changepoint",
+    "16": "ts_anomaly_spike",
+    "17": "grp_significant_diff",
+    "18": "grp_no_diff",
+    "19": "grp_dominant_category"
+  },
+  "classes": {
+    "dist_normal": {
+      "family": "distribution",
+      "arity": "univariate",
+      "charts": [
+        "histogram",
+        "kde",
+        "boxplot",
+        "violin",
+        "ecdf",
+        "qq",
+        "boxen",
+        "strip"
+      ],
+      "test": "Shapiro-Wilk + moment bounds + Hartigan dip",
+      "desc": "Approximately Gaussian: symmetric, unimodal, mesokurtic, no outlier mass."
+    },
+    "dist_right_skew": {
+      "family": "distribution",
+      "arity": "univariate",
+      "charts": [
+        "histogram",
+        "kde",
+        "boxplot",
+        "violin",
+        "ecdf",
+        "qq",
+        "boxen",
+        "strip"
+      ],
+      "test": "Fisher-Pearson skewness + Shapiro-Wilk",
+      "desc": "Long right tail; mean exceeds median."
+    },
+    "dist_left_skew": {
+      "family": "distribution",
+      "arity": "univariate",
+      "charts": [
+        "histogram",
+        "kde",
+        "boxplot",
+        "violin",
+        "ecdf",
+        "qq",
+        "boxen",
+        "strip"
+      ],
+      "test": "Fisher-Pearson skewness + Shapiro-Wilk",
+      "desc": "Long left tail; mean below median."
+    },
+    "dist_bimodal": {
+      "family": "distribution",
+      "arity": "univariate",
+      "charts": [
+        "histogram",
+        "kde",
+        "violin",
+        "ecdf",
+        "strip",
+        "boxen"
+      ],
+      "test": "Hartigan dip test + 2-component GMM BIC",
+      "desc": "Two separated modes; a single central tendency is misleading."
+    },
+    "dist_heavy_tail": {
+      "family": "distribution",
+      "arity": "univariate",
+      "charts": [
+        "histogram",
+        "kde",
+        "boxplot",
+        "violin",
+        "qq",
+        "boxen",
+        "strip"
+      ],
+      "test": "Excess kurtosis + IQR outlier fraction",
+      "desc": "Leptokurtic with extreme values far beyond the whiskers."
+    },
+    "dist_uniform": {
+      "family": "distribution",
+      "arity": "univariate",
+      "charts": [
+        "histogram",
+        "kde",
+        "ecdf",
+        "boxplot",
+        "strip",
+        "boxen"
+      ],
+      "test": "KS test against Uniform + platykurtic bound",
+      "desc": "Flat density; no preferred region across the range."
+    },
+    "rel_strong_positive": {
+      "family": "relationship",
+      "arity": "bivariate",
+      "charts": [
+        "scatter",
+        "hexbin",
+        "jointplot",
+        "bubble",
+        "regplot"
+      ],
+      "test": "Pearson r with Spearman agreement",
+      "desc": "Strong positive linear association."
+    },
+    "rel_strong_negative": {
+      "family": "relationship",
+      "arity": "bivariate",
+      "charts": [
+        "scatter",
+        "hexbin",
+        "jointplot",
+        "bubble",
+        "regplot"
+      ],
+      "test": "Pearson r with Spearman agreement",
+      "desc": "Strong negative linear association."
+    },
+    "rel_none": {
+      "family": "relationship",
+      "arity": "bivariate",
+      "charts": [
+        "scatter",
+        "hexbin",
+        "jointplot",
+        "bubble",
+        "regplot"
+      ],
+      "test": "Pearson + Spearman + quadratic R^2 all near zero",
+      "desc": "No detectable association of any modelled form."
+    },
+    "rel_nonlinear_monotonic": {
+      "family": "relationship",
+      "arity": "bivariate",
+      "charts": [
+        "scatter",
+        "hexbin",
+        "jointplot",
+        "bubble",
+        "regplot"
+      ],
+      "test": "Spearman >> Pearson divergence",
+      "desc": "Monotonic but curved; Pearson understates the true dependence."
+    },
+    "rel_nonlinear_nonmonotonic": {
+      "family": "relationship",
+      "arity": "bivariate",
+      "charts": [
+        "scatter",
+        "hexbin",
+        "jointplot",
+        "bubble",
+        "regplot"
+      ],
+      "test": "Quadratic R^2 with significant curvature, linear r ~ 0",
+      "desc": "U- or inverted-U shape; linear correlation is blind to it."
+    },
+    "rel_heteroscedastic": {
+      "family": "relationship",
+      "arity": "bivariate",
+      "charts": [
+        "scatter",
+        "hexbin",
+        "jointplot",
+        "regplot"
+      ],
+      "test": "Breusch-Pagan + residual-spread ratio across x terciles",
+      "desc": "Variance of y grows with x; a fan/cone shape."
+    },
+    "ts_increasing": {
+      "family": "temporal",
+      "arity": "timeseries",
+      "charts": [
+        "line",
+        "area",
+        "step",
+        "line_marker"
+      ],
+      "test": "Mann-Kendall tau (non-parametric monotonic trend)",
+      "desc": "Sustained upward trend over the observed window."
+    },
+    "ts_decreasing": {
+      "family": "temporal",
+      "arity": "timeseries",
+      "charts": [
+        "line",
+        "area",
+        "step",
+        "line_marker"
+      ],
+      "test": "Mann-Kendall tau (non-parametric monotonic trend)",
+      "desc": "Sustained downward trend over the observed window."
+    },
+    "ts_seasonal": {
+      "family": "temporal",
+      "arity": "timeseries",
+      "charts": [
+        "line",
+        "area",
+        "step",
+        "line_marker"
+      ],
+      "test": "Periodogram dominant power + ACF at the implied lag",
+      "desc": "Repeating cycle at a fixed period; no net trend."
+    },
+    "ts_changepoint": {
+      "family": "temporal",
+      "arity": "timeseries",
+      "charts": [
+        "line",
+        "area",
+        "step",
+        "line_marker"
+      ],
+      "test": "Binary-segmentation level shift vs residual scale",
+      "desc": "Abrupt regime shift in level partway through the series."
+    },
+    "ts_anomaly_spike": {
+      "family": "temporal",
+      "arity": "timeseries",
+      "charts": [
+        "line",
+        "line_marker",
+        "step"
+      ],
+      "test": "Median/MAD robust z-score point anomalies",
+      "desc": "Otherwise stable series with isolated extreme point(s)."
+    },
+    "grp_significant_diff": {
+      "family": "group",
+      "arity": "grouped",
+      "charts": [
+        "grouped_box",
+        "grouped_violin",
+        "grouped_bar",
+        "pointplot",
+        "grouped_strip"
+      ],
+      "test": "Kruskal-Wallis H + epsilon-squared effect size",
+      "desc": "Groups differ substantially in central tendency (large effect)."
+    },
+    "grp_no_diff": {
+      "family": "group",
+      "arity": "grouped",
+      "charts": [
+        "grouped_box",
+        "grouped_violin",
+        "grouped_bar",
+        "pointplot",
+        "grouped_strip"
+      ],
+      "test": "Kruskal-Wallis H + epsilon-squared effect size",
+      "desc": "Groups are statistically indistinguishable; apparent gaps are noise."
+    },
+    "grp_dominant_category": {
+      "family": "group",
+      "arity": "composition",
+      "charts": [
+        "countplot",
+        "pie",
+        "barh",
+        "bar"
+      ],
+      "test": "Top-category share + normalised Shannon entropy",
+      "desc": "One category dominates the composition."
+    }
+  }
+}

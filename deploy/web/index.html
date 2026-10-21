@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InsightVLM Chart Tester</title>
+<meta name="description" content="Upload a chart and a trained model names the statistical finding it shows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --ground: #f5f6fa; --surface: #ffffff; --ink: #121826; --muted: #586174; --rule: #dfe3ec;
+  --accent: #3451d1; --accent-ink: #ffffff; --accent-soft: #e9edfc; --good: #1d7a4b; --good-soft: #e3f4ea;
+  --bad: #b42318; --bad-soft: #fdecea; --warn: #8a5a00; --warn-soft: #fdf3dc;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #0e121a; --surface: #161b26; --ink: #e7eaf1; --muted: #98a2b6; --rule: #262e3d;
+    --accent: #8aa2ff; --accent-ink: #0e121a; --accent-soft: #1c2540; --good: #5ec994; --good-soft: #13281e;
+    --bad: #f08a7e; --bad-soft: #2c1714; --warn: #f0b562; --warn-soft: #2e2413; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--ground); color: var(--ink); font: 15px/1.55 var(--sans); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 20px; }
+a { color: var(--accent); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+
+header { padding-block: 34px 22px; display: grid; gap: 10px; }
+header h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+header p { margin: 0; max-width: 70ch; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.chip { background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 12px; font-size: 0.85rem; }
+.chip b { font-family: var(--mono); font-weight: 500; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px; }
+
+.drop { position: relative; border: 1.5px dashed var(--rule); border-radius: 10px; min-height: 340px; display: grid; place-items: center;
+        background: var(--ground); cursor: pointer; overflow: hidden; transition: border-color .15s; }
+.drop.over, .drop:hover { border-color: var(--accent); }
+.drop img { display: block; width: 100%; height: auto; max-height: 520px; object-fit: contain; background: #fff; }
+.drop .hint { text-align: center; padding: 24px; color: var(--muted); }
+.drop .hint b { color: var(--ink); display: block; font-size: 1.05rem; margin-bottom: 4px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+button { font: inherit; border-radius: 8px; padding: 9px 14px; cursor: pointer; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible, .drop:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.status { display: grid; gap: 8px; }
+.bar { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.result { display: grid; gap: 14px; }
+.result h2 { margin: 0; font-size: 1.45rem; line-height: 1.2; letter-spacing: -0.01em; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.9rem; color: var(--muted); }
+.meta b { color: var(--ink); font-weight: 600; }
+.def { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; margin: 0; }
+.note { border-radius: 8px; padding: 10px 12px; font-size: 0.92rem; }
+.note.warn { background: var(--warn-soft); color: var(--warn); }
+.truth { border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; }
+.truth.ok { background: var(--good-soft); } .truth.no { background: var(--bad-soft); }
+.truth .verdict { font-weight: 700; } .truth.ok .verdict { color: var(--good); } .truth.no .verdict { color: var(--bad); }
+.truth p { margin: 0; font-size: 0.92rem; }
+.top { display: grid; gap: 7px; }
+.row { display: grid; grid-template-columns: minmax(0, 11rem) 1fr 3.4rem; gap: 10px; align-items: center; font-size: 0.88rem; }
+.row .lab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .track { height: 9px; background: var(--ground); border-radius: 5px; overflow: hidden; }
+.row .track > i { display: block; height: 100%; background: var(--accent); border-radius: 5px; }
+.row .pct { text-align: right; font-family: var(--mono); }
+.empty { color: var(--muted); padding-block: 40px; text-align: center; }
+
+section.info { padding-block: 34px 10px; display: grid; gap: 18px; }
+section.info h3 { margin: 0; font-size: 1.15rem; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.fam h4 { margin: 0 0 6px; font-size: 0.78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.fam ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; font-size: 0.9rem; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); }
+td.num, th.num { text-align: right; font-family: var(--mono); }
+tr.ours td { font-weight: 600; }
+footer { padding-block: 26px 40px; color: var(--muted); font-size: 0.88rem; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>InsightVLM Chart Tester</h1>
+    <p>Upload a chart and a trained model names the statistical finding it shows: one of 20
+      findings across distributions, relationships, time series and group comparisons. The
+      model runs entirely in your browser; nothing is uploaded.</p>
+    <div class="chips">
+      <span class="chip">Real-chart accuracy <b>86.7%</b></span>
+      <span class="chip">Synthetic-chart accuracy <b>99.9%</b></span>
+      <span class="chip">Ensemble <b>ResNet-101 + DenseNet-121</b></span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a chart image">
+        <div class="hint" id="hint"><b>Drop a chart image here</b>or click to choose a file, or paste from the clipboard</div>
+      </div>
+      <input type="file" id="file" accept="image/*" hidden>
+      <div class="actions">
+        <button class="primary" id="b-real">Random real test chart</button>
+        <button id="b-syn">Random synthetic test chart</button>
+        <button id="b-up">Upload a chart</button>
+      </div>
+    </div>
+
+    <div class="panel" aria-live="polite">
+      <div class="status" id="status">
+        <span id="status-text" class="muted">Loading the model (198 MB, first visit only)…</span>
+        <div class="bar"><i id="status-bar"></i></div>
+      </div>
+      <div id="out" class="empty" hidden>Choose a chart to see what the model finds.</div>
+    </div>
+  </div>
+
+  <section class="info">
+    <h3>How well does it work?</h3>
+    <p class="muted" style="margin:0;max-width:75ch">Held-out test charts, never used in training or model
+      selection. <em>Real</em> charts plot real public data (OpenML, World Bank, Our World in Data, …) and are
+      the harder, more honest measure.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>System</th><th class="num">Real charts (n=1,192)</th><th class="num">Real charts, unseen plotting library</th><th class="num">Synthetic charts</th></tr></thead>
+        <tbody>
+          <tr class="ours"><td>This model (ensemble)</td><td class="num">86.7%</td><td class="num">71.6%</td><td class="num">99.9%</td></tr>
+          <tr><td>Qwen3-VL-8B, no task training</td><td class="num">46.8%</td><td class="num">–</td><td class="num">64.8%</td></tr>
+          <tr><td>Qwen2.5-VL-7B, no task training</td><td class="num">41.1%</td><td class="num">–</td><td class="num">49.8%</td></tr>
+          <tr><td>Chart type alone, no pixels</td><td class="num">28.8%</td><td class="num">–</td><td class="num">–</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>The 20 findings</h3>
+    <div class="cols" id="families"></div>
+  </section>
+
+  <footer>
+    InsightVLM · Team Hocrux · <a href="https://github.com/A-K-M-Asifuzzaman/InsightVLM">Code, data documentation and thesis</a>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.29.0/dist/ort.webgpu.min.js" integrity="sha384-spJihwjw5DABHdp7XVsBfqbR7hlxe8gdmFg+FQUzeWG58zV7iOKXd30heVr3CZG0" crossorigin="anonymous"></script>
+<script>
+const $ = (id) => document.getElementById(id);
+const FAMILY = { distribution: "Distribution", relationship: "Relationship", temporal: "Time series", group: "Groups" };
+let META, CLASSES, SAMPLES, session, busy = false, pending = null;
+
+// ---- PIL-compatible resize -------------------------------------------------
+// The model was evaluated on images resized by PIL (bilinear, antialiased). Browser
+// canvas scaling differs slightly, so the same separable filter is reproduced here:
+// horizontal pass, 8-bit rounding, then vertical pass, with PIL's fixed-point maths.
+function coeffs(inSize, outSize) {
+  const scale = inSize / outSize, fs = Math.max(scale, 1), support = fs, out = [];
+  for (let xx = 0; xx < outSize; xx++) {
+    const center = (xx + 0.5) * scale;
+    let xmin = Math.trunc(center - support + 0.5); if (xmin < 0) xmin = 0;
+    let xmax = Math.trunc(center + support + 0.5); if (xmax > inSize) xmax = inSize;
+    xmax -= xmin;
+    const k = []; let ww = 0;
+    for (let x = 0; x < xmax; x++) {
+      const t = Math.abs((x + xmin - center + 0.5) / fs);
+      const w = t < 1 ? 1 - t : 0; k.push(w); ww += w;
+    }
+    out.push({ xmin, k: k.map((w) => { const v = (ww ? w / ww : 0) * 4194304; return v < 0 ? Math.trunc(v - 0.5) : Math.trunc(v + 0.5); }) });
+  }
+  return out;
+}
+const clip8 = (v) => { v = Math.floor(v / 4194304); return v < 0 ? 0 : v > 255 ? 255 : v; };
+function pilResize(rgb, w, h, ow, oh) {
+  let src = rgb, sw = w;
+  if (ow !== w) {
+    const cx = coeffs(w, ow), tmp = new Uint8ClampedArray(ow * h * 3);
+    for (let y = 0; y < h; y++) for (let x = 0; x < ow; x++) {
+      const { xmin, k } = cx[x];
+      for (let c = 0; c < 3; c++) {
+        let s = 2097152;
+        for (let i = 0; i < k.length; i++) s += rgb[(y * w + xmin + i) * 3 + c] * k[i];
+        tmp[(y * ow + x) * 3 + c] = clip8(s);
+      }
+    }
+    src = tmp; sw = ow;
+  }
+  if (oh === h) return src;
+  const cy = coeffs(h, oh), out = new Uint8ClampedArray(sw * oh * 3);
+  for (let y = 0; y < oh; y++) {
+    const { xmin, k } = cy[y];
+    for (let x = 0; x < sw; x++) for (let c = 0; c < 3; c++) {
+      let s = 2097152;
+      for (let i = 0; i < k.length; i++) s += src[((xmin + i) * sw + x) * 3 + c] * k[i];
+      out[(y * sw + x) * 3 + c] = clip8(s);
+    }
+  }
+  return out;
+}
+
+function toTensor(img) {
+  const w = img.naturalWidth, h = img.naturalHeight, cv = document.createElement("canvas");
+  cv.width = w; cv.height = h;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0);   // transparent -> white
+  const px = ctx.getImageData(0, 0, w, h).data, rgb = new Uint8ClampedArray(w * h * 3);
+  for (let i = 0, j = 0; i < px.length; i += 4, j += 3) { rgb[j] = px[i]; rgb[j + 1] = px[i + 1]; rgb[j + 2] = px[i + 2]; }
+  const S = META.size, r = pilResize(rgb, w, h, S, S), t = new Float32Array(3 * S * S);
+  for (let c = 0; c < 3; c++) for (let i = 0; i < S * S; i++) t[c * S * S + i] = (r[i * 3 + c] / 255 - META.mean[c]) / META.std[c];
+  return new ort.Tensor("float32", t, [1, 3, S, S]);
+}
+
+// ---- model --------------------------------------------------------------------
+async function fetchWithProgress(url, onp) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`model download failed (${res.status})`);
+  const total = +res.headers.get("content-length") || 198315465;
+  const reader = res.body.getReader(), parts = []; let got = 0;
+  for (;;) { const { done, value } = await reader.read(); if (done) break; parts.push(value); got += value.length; onp(got / total); }
+  const buf = new Uint8Array(got); let o = 0; for (const p of parts) { buf.set(p, o); o += p.length; }
+  return buf;
+}
+async function loadModel() {
+  [META, CLASSES, SAMPLES] = await Promise.all(["model.json", "classes.json", "samples.json"].map((f) => fetch(f).then((r) => r.json())));
+  renderFamilies();
+  setButtons();
+  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.29.0/dist/";
+  const buf = await fetchWithProgress("insightvlm_ensemble.onnx", (p) => {
+    $("status-bar").style.width = (100 * Math.min(p, 1)).toFixed(1) + "%";
+    $("status-text").textContent = `Loading the model (198 MB, first visit only)… ${Math.round(100 * Math.min(p, 1))}%`;
+  });
+  $("status-text").textContent = "Preparing the model…";
+  try { session = await ort.InferenceSession.create(buf, { executionProviders: ["webgpu", "wasm"] }); }
+  catch { session = await ort.InferenceSession.create(buf, { executionProviders: ["wasm"] }); }
+  $("status").hidden = true; $("out").hidden = false;
+  if (pending) { const p = pending; pending = null; analyse(p.img, p.sample); }
+}
+
+// ---- prediction + rendering -------------------------------------------------------
+async function analyse(img, sample) {
+  if (!session) { pending = { img, sample }; return; }
+  busy = true; setButtons();
+  const out = $("out"); out.className = "empty"; out.textContent = "Analysing the chart…";
+  try {
+    const res = await session.run({ image: toTensor(img) });
+    const p = res.probs.data, K = CLASSES.length, M = p.length / K;
+    const mean = CLASSES.map((_, j) => { let s = 0; for (let m = 0; m < M; m++) s += p[m * K + j]; return s / M; });
+    const best = mean.indexOf(Math.max(...mean));
+    let agree = 0;
+    for (let m = 0; m < M; m++) { const row = Array.from(p.slice(m * K, (m + 1) * K)); if (row.indexOf(Math.max(...row)) === best) agree++; }
+    render(mean, best, agree, M, sample);
+  } catch (e) {
+    out.textContent = "Could not analyse this image: " + e.message;
+  }
+  busy = false; setButtons();
+}
+
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function render(mean, best, agree, M, sample) {
+  const c = CLASSES[best], out = $("out");
+  out.className = "result"; out.replaceChildren();
+  out.append(el("h2", null, c.name));
+  const meta = el("div", "meta");
+  for (const [k, v] of [["Confidence", (100 * mean[best]).toFixed(1) + "%"], ["Family", FAMILY[c.family]], ["Models agreeing", `${agree} of ${M}`]]) {
+    const s = el("span"); s.append(k + " "); s.append(el("b", null, v)); meta.append(s);
+  }
+  out.append(meta);
+  const d = el("blockquote", "def", c.desc); out.append(d);
+  const t = el("div", "muted"); t.style.fontSize = "0.9rem"; t.textContent = "Statistical test behind this finding: " + c.test; out.append(t);
+  if (mean[best] < 0.5) out.append(el("div", "note warn", "Low confidence: the chart may show a mix of patterns, or one outside the 20 findings the model knows."));
+  if (sample) {
+    const ok = sample.label === c.id, truth = CLASSES.find((x) => x.id === sample.label);
+    const box = el("div", "truth " + (ok ? "ok" : "no"));
+    box.append(el("span", "verdict", ok ? "✓ Correct" : "✗ Wrong"));
+    box.append(el("p", null, `Verified answer: ${truth.name}`));
+    box.append(el("p", "muted", `${sample.provenance === "real" ? "Real" : "Synthetic"} data${sample.source ? " (" + sample.source + ")" : ""} · ${sample.chart_type.replace(/_/g, " ")} · ${sample.difficulty}`));
+    if (sample.insight) box.append(el("p", null, "Verified insight: " + sample.insight));
+    out.append(box);
+  }
+  const top = el("div", "top");
+  top.append(el("div", "muted", "Five most likely findings"));
+  mean.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 5).forEach(([v, i]) => {
+    const r = el("div", "row"), tr = el("div", "track"), bar = el("i");
+    bar.style.width = (100 * v).toFixed(1) + "%"; tr.append(bar);
+    r.append(el("span", "lab", CLASSES[i].name), tr, el("span", "pct", (100 * v).toFixed(1) + "%"));
+    top.append(r);
+  });
+  out.append(top);
+}
+
+function renderFamilies() {
+  const box = $("families");
+  for (const f of Object.keys(FAMILY)) {
+    const d = el("div", "fam"); d.append(el("h4", null, FAMILY[f]));
+    const ul = el("ul");
+    CLASSES.filter((c) => c.family === f).forEach((c) => { const li = el("li"); li.append(el("b", null, c.name + ": ")); li.append(c.desc); ul.append(li); });
+    d.append(ul); box.append(d);
+  }
+}
+
+// ---- inputs ----------------------------------------------------------------------------
+function show(src, sample) {
+  const img = new Image();
+  img.onload = () => { const d = $("drop"); d.replaceChildren(img); analyse(img, sample); };
+  img.onerror = () => { $("out").hidden = false; $("out").className = "empty"; $("out").textContent = "That file could not be read as an image."; };
+  img.src = src;
+  img.alt = sample ? "Test chart" : "Uploaded chart";
+}
+function fromFile(f) { if (f && f.type.startsWith("image/")) show(URL.createObjectURL(f), null); }
+function randomSample(prov) { const pool = SAMPLES.filter((s) => s.provenance === prov); const s = pool[Math.floor(Math.random() * pool.length)]; show(s.file, s); }
+function setButtons() { for (const id of ["b-real", "b-syn", "b-up"]) $(id).disabled = busy || !SAMPLES; }
+
+$("b-real").onclick = () => randomSample("real");
+$("b-syn").onclick = () => randomSample("synthetic");
+$("b-up").onclick = () => $("file").click();
+$("drop").onclick = () => $("file").click();
+$("drop").onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("file").click(); } };
+$("file").onchange = (e) => fromFile(e.target.files[0]);
+$("drop").ondragover = (e) => { e.preventDefault(); $("drop").classList.add("over"); };
+$("drop").ondragleave = () => $("drop").classList.remove("over");
+$("drop").ondrop = (e) => { e.preventDefault(); $("drop").classList.remove("over"); fromFile(e.dataTransfer.files[0]); };
+document.addEventListener("paste", (e) => { const it = [...e.clipboardData.items].find((i) => i.type.startsWith("image/")); if (it) fromFile(it.getAsFile()); });
+
+setButtons();
+loadModel().then(setButtons).catch((e) => { $("status-text").textContent = "The model could not be loaded: " + e.message; });
+</script>
+</body>
+</html>

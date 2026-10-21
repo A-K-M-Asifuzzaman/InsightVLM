@@ -1,0 +1,142 @@
+[
+ {
+  "id": "dist_normal",
+  "name": "Normal distribution",
+  "family": "distribution",
+  "desc": "Approximately Gaussian: symmetric, unimodal, mesokurtic, no outlier mass.",
+  "test": "Shapiro-Wilk + moment bounds + Hartigan dip"
+ },
+ {
+  "id": "dist_right_skew",
+  "name": "Right-skewed distribution",
+  "family": "distribution",
+  "desc": "Long right tail; mean exceeds median.",
+  "test": "Fisher-Pearson skewness + Shapiro-Wilk"
+ },
+ {
+  "id": "dist_left_skew",
+  "name": "Left-skewed distribution",
+  "family": "distribution",
+  "desc": "Long left tail; mean below median.",
+  "test": "Fisher-Pearson skewness + Shapiro-Wilk"
+ },
+ {
+  "id": "dist_bimodal",
+  "name": "Bimodal distribution",
+  "family": "distribution",
+  "desc": "Two separated modes; a single central tendency is misleading.",
+  "test": "Hartigan dip test + 2-component GMM BIC"
+ },
+ {
+  "id": "dist_heavy_tail",
+  "name": "Heavy-tailed distribution",
+  "family": "distribution",
+  "desc": "Leptokurtic with extreme values far beyond the whiskers.",
+  "test": "Excess kurtosis + IQR outlier fraction"
+ },
+ {
+  "id": "dist_uniform",
+  "name": "Uniform distribution",
+  "family": "distribution",
+  "desc": "Flat density; no preferred region across the range.",
+  "test": "KS test against Uniform + platykurtic bound"
+ },
+ {
+  "id": "rel_strong_positive",
+  "name": "Strong positive correlation",
+  "family": "relationship",
+  "desc": "Strong positive linear association.",
+  "test": "Pearson r with Spearman agreement"
+ },
+ {
+  "id": "rel_strong_negative",
+  "name": "Strong negative correlation",
+  "family": "relationship",
+  "desc": "Strong negative linear association.",
+  "test": "Pearson r with Spearman agreement"
+ },
+ {
+  "id": "rel_none",
+  "name": "No relationship",
+  "family": "relationship",
+  "desc": "No detectable association of any modelled form.",
+  "test": "Pearson + Spearman + quadratic R^2 all near zero"
+ },
+ {
+  "id": "rel_nonlinear_monotonic",
+  "name": "Non-linear monotonic relationship",
+  "family": "relationship",
+  "desc": "Monotonic but curved; Pearson understates the true dependence.",
+  "test": "Spearman >> Pearson divergence"
+ },
+ {
+  "id": "rel_nonlinear_nonmonotonic",
+  "name": "U-shaped / inverted-U relationship",
+  "family": "relationship",
+  "desc": "U- or inverted-U shape; linear correlation is blind to it.",
+  "test": "Quadratic R^2 with significant curvature, linear r ~ 0"
+ },
+ {
+  "id": "rel_heteroscedastic",
+  "name": "Heteroscedastic (fan-shaped) relationship",
+  "family": "relationship",
+  "desc": "Variance of y grows with x; a fan/cone shape.",
+  "test": "Breusch-Pagan + residual-spread ratio across x terciles"
+ },
+ {
+  "id": "ts_increasing",
+  "name": "Increasing trend",
+  "family": "temporal",
+  "desc": "Sustained upward trend over the observed window.",
+  "test": "Mann-Kendall tau (non-parametric monotonic trend)"
+ },
+ {
+  "id": "ts_decreasing",
+  "name": "Decreasing trend",
+  "family": "temporal",
+  "desc": "Sustained downward trend over the observed window.",
+  "test": "Mann-Kendall tau (non-parametric monotonic trend)"
+ },
+ {
+  "id": "ts_seasonal",
+  "name": "Seasonal pattern",
+  "family": "temporal",
+  "desc": "Repeating cycle at a fixed period; no net trend.",
+  "test": "Periodogram dominant power + ACF at the implied lag"
+ },
+ {
+  "id": "ts_changepoint",
+  "name": "Level shift (change-point)",
+  "family": "temporal",
+  "desc": "Abrupt regime shift in level partway through the series.",
+  "test": "Binary-segmentation level shift vs residual scale"
+ },
+ {
+  "id": "ts_anomaly_spike",
+  "name": "Anomaly spike",
+  "family": "temporal",
+  "desc": "Otherwise stable series with isolated extreme point(s).",
+  "test": "Median/MAD robust z-score point anomalies"
+ },
+ {
+  "id": "grp_significant_diff",
+  "name": "Groups differ significantly",
+  "family": "group",
+  "desc": "Groups differ substantially in central tendency (large effect).",
+  "test": "Kruskal-Wallis H + epsilon-squared effect size"
+ },
+ {
+  "id": "grp_no_diff",
+  "name": "No difference between groups",
+  "family": "group",
+  "desc": "Groups are statistically indistinguishable; apparent gaps are noise.",
+  "test": "Kruskal-Wallis H + epsilon-squared effect size"
+ },
+ {
+  "id": "grp_dominant_category",
+  "name": "One dominant category",
+  "family": "group",
+  "desc": "One category dominates the composition.",
+  "test": "Top-category share + normalised Shannon entropy"
+ }
+]

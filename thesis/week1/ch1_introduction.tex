@@ -1,0 +1,195 @@
+\chapter{Introduction}
+\label{ch:intro}
+
+\section{Background}
+
+Quantitative findings travel as pictures. A reader meets a distribution, a
+correlation or a trend as a chart long before meeting the numbers behind it. The
+properties that most often invalidate a naive reading --- bimodality that makes a
+mean meaningless, heteroscedasticity that invalidates a standard error, a group
+difference that is statistically significant yet practically negligible --- are
+present in the figure but absent from its caption.
+
+Recent Vision--Language Models (VLMs) are able to understand charts, answer
+questions, generate descriptions, and reconstruct underlying data. However, most
+existing approaches are designed for a predefined task and a user-specified
+query, rather than for automatically discovering the important statistical
+patterns in a visualization.
+
+\section{Problem Statement}
+\label{sec:problem}
+
+Existing chart VLMs answer questions a human already thought to ask, describe
+what a figure looks like, or reconstruct the code that drew it. None of these
+objectives requires the model to decide \emph{what is worth reporting}.
+Consequently users must still manually study a chart to determine its trends,
+relationships, distributions and anomalies.
+
+Three specific deficiencies follow, and they organise the rest of this thesis.
+
+\paragraph{(P1) No corpus carries a verified \emph{statistical} finding as
+ground truth.} Supervision in prior work is a question and an answer, a caption,
+or plotting code. Recent work does verify factual claims about charts
+\citep{chocolate,techrxiv}, but it does so \emph{post hoc}, on captions a model
+has already produced, and at the level of values, labels and simple trends.
+No corpus pairs each chart with a statistically confirmed finding that a model
+could be \emph{trained} toward. Without such a label there is nothing to optimise
+for statistical correctness, and a model may reconstruct a histogram's data table
+perfectly while never observing that the distribution is bimodal.
+
+\paragraph{(P2) Analysis is not question answering.} Autonomous analysis requires
+choosing what to report. A model answering a supplied question never makes that
+choice, so question-driven benchmarks cannot measure the capability we care
+about.
+
+\paragraph{(P3) Claims are ungrounded.} No chart corpus ties a stated finding to
+the specific pixels that support it. The question ``was the model right for the
+right reason?'' therefore cannot be asked, let alone answered. \citet{shortcut}
+show why this matters: without such a check, a model may reach high accuracy
+through features that carry no statistical evidence at all.
+
+\paragraph{Who this affects.} Analysts and domain scientists who read charts under
+time pressure and need the non-obvious property flagged; and anyone consuming
+automated reporting built on current chart VLMs, where a fluent but statistically
+wrong summary is indistinguishable from a correct one.
+
+\section{Scope}
+
+\paragraph{In scope.} Twenty statistical finding classes across four analysis
+families (distribution shape, bivariate relationship, temporal behaviour, group
+comparison); single-label classification and generation from a static chart
+image; a balanced, statistically verified benchmark with underlying data tables,
+supporting statistics and pixel-level evidence; charts rendered with
+\texttt{matplotlib}/\texttt{seaborn} at fixed resolution.
+
+\paragraph{Out of scope.} Compound findings (charts exhibiting two findings at
+once were excluded rather than multi-labelled); causal claims; cross-renderer
+generalisation to Excel, Plotly, D3 or hand-drawn figures; interactive, 3-D,
+geographic and multi-panel dashboards; chart-type classification as an end in
+itself.
+
+\section{Motivation}
+
+Two observations motivate the work.
+
+First, \textbf{statistical correctness is not currently measurable} in this
+field. A chart VLM can produce a fluent paragraph containing fabricated numbers
+and score well on every existing benchmark, because those benchmarks grade
+answers rather than claims. Our own experiments make this concrete: a fine-tuned
+VLM names the correct finding in $80\%$ of cases while only $13.8\%$ of the
+numbers it cites appear in the ground truth (Chapter~\ref{ch:method}).
+
+Second, \textbf{numeracy failures have been documented only in text.}
+Several authors show that language models struggle with statistical operations
+\citep{stateval,numericbench,numeracynli,bittokens}, but every such evaluation
+supplies the numbers directly. Whether the weakness persists when a number must
+first be read off a rendered chart is untested.
+
+Third, \textbf{synthetic chart corpora are now standard, and their
+generalisation is rarely measured.} Large-scale synthetic generation has become
+the dominant way to scale chart datasets, but without a held-out real subset it
+is impossible to say how much reported performance is a generator artefact.
+
+\section{Research Questions}
+\label{sec:rqs}
+
+\begin{description}[leftmargin=1.6cm,style=nextline,font=\bfseries]
+  \item[RQ1.] Can a vision--language model be trained to automatically identify
+  statistical patterns, including trends, correlations, distribution
+  characteristics and anomalies, directly from a chart image without a supplied
+  question?
+
+  \item[RQ2.] How does the statistical correctness of VLM-generated insights
+  compare with a deterministic rule-based statistical pipeline applied to the
+  same underlying data?
+
+  \item[RQ3.] To what extent do insights generated by InsightVLM remain
+  evidence-grounded, meaning that each insight can be traced to a specific,
+  verifiable statistical claim and its supporting chart evidence?
+
+  \item[RQ4.] How well does a model trained primarily on synthetic chart data
+  generalise to real-world charts, as measured on a held-out real-only
+  evaluation set?
+
+  \item[RQ5.] What evaluation protocol correctly measures statistical-pattern
+  detection performance on chart images, given that chart type alone is
+  structurally predictive of the finding class, and how robust is the underlying
+  dataset to non-statistical shortcuts?
+\end{description}
+
+\section{Objectives}
+\label{sec:objectives}
+
+\begin{description}[leftmargin=1.2cm,style=nextline,font=\bfseries]
+  \item[O1.] Build the multimodal chart dataset and statistical ground truth.
+  \item[O2.] Train and evaluate InsightVLM for autonomous statistical-pattern
+  detection.
+  \item[O3.] Build the deterministic statistical baseline and compare
+  correctness.
+  \item[O4.] Develop the evidence-grounding evaluation.
+  \item[O5.] Evaluate generalisation on real-world charts.
+  \item[O6.] Define a corrected evaluation protocol (chart-type-prior floor,
+  data-oracle ceiling) and audit the dataset for non-statistical shortcuts
+  (caption text, chart-type bias, real/synthetic provenance leakage).
+\end{description}
+
+\begin{table}[t]\centering\small
+\caption{Traceability. Every objective serves a research question and addresses a
+deficiency from Section~\ref{sec:problem}; no objective exists without both.}
+\label{tab:traceability}
+\begin{tabular}{llll}
+\toprule
+\textbf{Objective} & \textbf{Serves} & \textbf{Addresses} & \textbf{Measured by} \\
+\midrule
+O1 & RQ1 & P1 & Label re-verification rate; generator$\rightarrow$class fidelity \\
+O2 & RQ1 & P2 & Class accuracy; macro-F1 \\
+O3 & RQ2 & P1 & Numeric fidelity vs.\ deterministic oracle \\
+O4 & RQ3 & P3 & Evidence Pointing Accuracy vs.\ random control \\
+O5 & RQ4 & P1 & Real-only probe vs.\ synthetic accuracy \\
+O6 & RQ5 & P1, P2 & Chart-type prior; oracle ceiling; 11-test shortcut audit \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Contribution Statement}
+\label{sec:contribution}
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item A purpose-built multimodal chart dataset pairing chart images with
+  underlying tabular data and \emph{statistically verified} findings, providing a
+  controlled foundation for evaluating autonomous statistical pattern discovery.
+
+  \item \textbf{InsightVLM}, a vision--language approach designed to
+  automatically identify and report statistical patterns and insights from chart
+  images without requiring a predefined user question.
+
+  \item A statistical-correctness evaluation framework that compares
+  model-generated insights against a deterministic rule-based statistical
+  pipeline operating on the same underlying data.
+
+  \item An evidence-grounding evaluation protocol for determining whether
+  generated insights can be traced to specific, verifiable statistical claims and
+  supporting chart evidence.
+
+  \item A generalisation evaluation measuring the performance of a model trained
+  primarily on synthetic charts when evaluated on a held-out set of real-world
+  charts.
+
+  \item A corrected evaluation protocol establishing a chart-type-prior floor and
+  a data-oracle ceiling for scoring statistical pattern detection, together with a
+  shortcut and bias audit verifying that the dataset cannot be solved via
+  non-statistical cues.
+\end{enumerate}
+
+\section{Thesis Structure}
+
+Chapter~\ref{ch:lit} reviews the chart-understanding literature in seven groups
+and identifies the gap this work targets. Chapter~\ref{ch:method} describes the
+methodology: dataset construction and its verification gate, the models, the
+evaluation protocol, and the risks that could invalidate the work.
+Chapter~\ref{ch:results} reports the results, beginning with a correction to earlier
+drafts (a rendering leak and a test-set selection), and answers each research question.
+Chapter~\ref{ch:discussion} discusses what the results mean, the lessons of the leak,
+threats to validity and limitations. Chapter~\ref{ch:conclusion} concludes and sets out
+future work. Appendix~\ref{app:tester} describes the interactive tester and
+Appendix~\ref{app:repro} lists the artefacts and how to regenerate every result.

@@ -1,0 +1,5 @@
+model,marks,all,real,synthetic,ts_anomaly_spike,ts_changepoint,ts_decreasing,ts_increasing,ts_seasonal
+resnet101_nb1,True,0.987,0.9573770491803278,1.0,0.99,1.0,1.0,0.975,0.97
+resnet101_nb1,False,0.652,0.3114754098360656,0.8014388489208633,0.73,0.355,0.635,0.57,0.97
+resnet50_sweep,True,0.983,0.9442622950819672,1.0,0.995,1.0,1.0,0.93,0.99
+resnet50_sweep,False,0.757,0.4065573770491803,0.9107913669064748,0.78,0.705,0.74,0.57,0.99

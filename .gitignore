@@ -1,0 +1,32 @@
+# data and build artefacts (released separately)
+dataset/*
+!dataset/class_index.json
+!dataset/DATASHEET.md
+!dataset/BIAS_AUDIT.md
+cache/
+raw_sources/
+*.zip
+
+# model weights and large outputs (weights are hosted with the demo)
+*.pt
+*.pth
+*.safetensors
+*.onnx
+results_nb4/
+results/account1/
+results/ensemble/
+results/nb1/
+results/nb2/
+results/nb3/
+results/nb4/
+results/nb5_v4/
+results/human_study/
+results/**/*.log
+deploy/web/samples/
+submission/
+
+# misc
+.DS_Store
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

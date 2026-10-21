@@ -1,0 +1,20 @@
+{
+  "Qwen2.5-VL-7B-Instruct": {
+    "real": 0.4203020134228188,
+    "synthetic": 0.4675,
+    "unparsed": 0.0,
+    "n": 1592
+  },
+  "Qwen3-VL-8B-Instruct": {
+    "real": 0.48070469798657717,
+    "synthetic": 0.605,
+    "unparsed": 0.000628140703517588,
+    "n": 1592
+  },
+  "Qwen2.5-VL-3B-Instruct": {
+    "real": 0.33053691275167785,
+    "synthetic": 0.3275,
+    "unparsed": 0.0,
+    "n": 1592
+  }
+}
