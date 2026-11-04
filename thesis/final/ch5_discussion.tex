@@ -75,7 +75,8 @@ uncertainty.
 \paragraph{Statistical conclusion validity.} Every headline accuracy carries a bootstrap
 confidence interval, and system comparisons use paired exact McNemar tests on the same
 charts. Per-class accuracies for rare classes are reported with their $n$ and should not
-be over-read.
+be over-read. Per-class results for the rarest real classes are indicative only: with $n=13$ to $26$ real test charts, a class's 95\% interval spans roughly $\pm 19$ to $\pm 27$ points. The confidence intervals reflect test-set sampling; training variance across random seeds is
+reported separately (Section~\ref{sec:rq1}).
 
 \section{Limitations}
 

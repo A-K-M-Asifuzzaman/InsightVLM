@@ -47,6 +47,8 @@ Held-out test split, scored once; every selection was made on the validation spl
 
 Brackets: 95% bootstrap confidence intervals. ¹ On a fixed 400-chart synthetic sample.
 The ensemble beats every zero-shot model on the same charts (exact McNemar *p* < 10⁻¹⁰⁰).
+Removing the 85 real test charts whose data also appears in training data under another source
+table (near-duplicates, `build/14_near_duplicates.py`) gives 86.3% [84.3, 88.3].
 
 ![Results](paper/figures/fig_results.png)
 

@@ -73,7 +73,10 @@ class so no class is mostly real or mostly synthetic.
 
 Splits are **source-disjoint**: a hash of the source-table id assigns every chart from one
 table to one split (0 of 654 sources leak). `splits/test_real_only.jsonl` is the headline
-evaluation set.
+evaluation set. The same data can still appear under two source tables (for example World Bank
+and Our World in Data); `build/14_near_duplicates.py` flags 85 real test charts with near-duplicate
+data in training data. Report results on the deduplicated set as well (see
+[RESULTS.md](RESULTS.md#near-duplicates-across-splits)).
 
 **Supplementary real training pool.** Balance caps real data at 500 per class, which left
 verified real candidates unused. `build/12_extra_real.py` keeps those whose source table

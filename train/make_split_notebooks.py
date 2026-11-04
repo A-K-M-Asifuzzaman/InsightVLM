@@ -1002,6 +1002,52 @@ NB7 = {
     "nb7_d121": nb7([("densenet121", "d121_384_real50_xp", 0.5)], "NB7: DenseNet-121 + extra real + renderer aug"),
 }
 
+# NB4v2 — the generative model retrained on version-2 charts. NB4 used v1 renders,
+# whose time-series charts carried label-dependent marks; the same clean in-notebook
+# render as NB5/NB7 replaces them. Same model, data size, prompt and 300-chart eval.
+def nb4v2():
+    import copy
+    cells = copy.deepcopy(nb4)
+    src = lambda c: "".join(c["source"])  # noqa: E731
+    i = next(k for k, c in enumerate(cells) if 'print("GPU:"' in src(c))
+    cells[i] = code(src(cells[i]) + "\n" + RENDER_V2TS + '''
+def v2img(p):
+    """Time-series charts come from the clean v2 render; every other chart is unchanged."""
+    p = str(p)
+    return str(OV / p.split("/", 1)[1]) if p.startswith("images/ts_") else str(DATA / p)
+assert all(Path(v2img(p)).exists() for p in te.image), "v2 image missing"
+print("v2 images:", sum(p.startswith("images/ts_") for p in te.image), "test time series from the clean render")
+''')
+    j = next(k for k, c in enumerate(cells) if "N_TRAIN = 1500" in src(c))
+    cells[j] = code(src(cells[j]).replace("N_TRAIN = 1500", "N_TRAIN = 4000")
+                    .replace('for r in rows: r["image"] = str(DATA / r["image"])',
+                             'for r in rows: r["image"] = v2img(r["image"])'))
+    k = next(k for k, c in enumerate(cells) if "txt = generate(str(DATA / r.image))" in src(c))
+    cells[k] = code(src(cells[k]).replace("txt = generate(str(DATA / r.image))", "txt = generate(v2img(r.image))"))
+    cells[0] = md("# InsightVLM — NB4v2: Qwen2-VL-2B + QLoRA on version-2 charts\n\n"
+                  "NB4 retrained on the clean v2 renders (no label-dependent marks). Same model, "
+                  "4,000 training samples, one epoch, same prompt and the same 300-chart evaluation "
+                  "sample. Output: `nb4_results.json`, `nb4_vlm_predictions.csv`.")
+    return cells
+
+
+def seeded(cells, seed):
+    """Same notebook, different global seed (sampler order, augmentation, head init)."""
+    import copy
+    cells = copy.deepcopy(cells)
+    for c in cells:
+        if c["cell_type"] == "code" and "SEED = 20260815" in "".join(c["source"]):
+            c["source"] = code("".join(c["source"]).replace("SEED = 20260815", f"SEED = {seed}"))["source"]
+    return cells
+
+
+NB_EXTRA = {"nb4v2_vlm": nb4v2()}
+for _seed in (2, 3):
+    NB_EXTRA[f"nb7_r101_s{_seed}"] = seeded(
+        nb7([("resnet101", f"r101_384_real50_xp_s{_seed}", 0.5)], f"NB7 seed {_seed}: ResNet-101"), 20260815 + _seed)
+    NB_EXTRA[f"nb7_d121_s{_seed}"] = seeded(
+        nb7([("densenet121", f"d121_384_real50_xp_s{_seed}", 0.5)], f"NB7 seed {_seed}: DenseNet-121"), 20260815 + _seed)
+
 # NB6b — the same zero-shot run on the time-series part of NB6's eval set only,
 # with the clean v2 images. Every other chart is byte-identical between v1 and v2,
 # so NB6's predictions on them stand and only these need re-running.
@@ -1030,7 +1076,7 @@ if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
     for name, cells in [("nb1_main", nb1), ("nb2_crop", nb2),
                         ("nb3_resolution", nb3), ("nb4_vlm", nb4), ("nb5_real", nb5),
-                        ("nb6_zeroshot", nb6), ("nb6b_zeroshot_ts", nb6b)] + list(NB5X.items()) + list(NB7.items()):
+                        ("nb6_zeroshot", nb6), ("nb6b_zeroshot_ts", nb6b)] + list(NB5X.items()) + list(NB7.items()) + list(NB_EXTRA.items()):
         p = OUT / f"{name}.ipynb"
         p.write_text(json.dumps(nb(cells), indent=1))
         print(f"{p.name:24s} {len(cells):2d} cells  {p.stat().st_size/1024:5.0f} KB")

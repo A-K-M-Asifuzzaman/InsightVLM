@@ -137,7 +137,7 @@ than kind: bimodal read as right-skewed (19 of 100), heavy-tailed read as right-
 (13 of 26) and significant group differences read as none (12 of 100). Accuracy is
 lowest where real examples are rare: heavy tails ($0.385$, $n=26$), seasonality
 ($0.462$, $n=13$), left skew ($0.474$, $n=19$), and the inverted-U relationship, of
-which only two real test charts exist.
+which only two real test charts exist. Per-class results for the rarest real classes are indicative only: with $n=13$ to $26$ real test charts, a class's 95\% interval spans roughly $\pm 19$ to $\pm 27$ points.
 
 \begin{figure}[h]\centering
 \includegraphics[width=0.92\linewidth]{fig_confusion.pdf}
@@ -274,19 +274,46 @@ particular, pixel statistics cannot tell real from synthetic charts (AUC 0.551).
 audit missed the rendering leak of Section~\ref{sec:leak}: an audit of data and pixels
 does not replace testing what a trained model uses.
 
+\paragraph{Near-duplicates across splits.} The integrity audit removes exact duplicates and keeps
+source tables split-disjoint, but the same data can be published under two sources.
+Every real validation and test chart was therefore compared with every real chart a
+model can train on (training split and supplementary pool) of the same arity: candidate
+pairs whose data signatures correlate above 0.99 count as near-duplicates only when the
+data itself matches (for time series, mean and spread within 5\%; for sampled data, at
+least half the $(x,y)$ pairs, or 90\% of the values, identical; for compositions, the same
+categories and shares). 85 real test charts (7.1\%) and 34 validation charts are flagged.
+Most are republished tables, such as World Bank and Our World in Data internet-use
+series or two OpenML uploads of the same dataset; a few are coincidental matches of
+integer-valued columns. On the flagged charts the ensemble scores 0.918; without them
+its real-chart accuracy is 0.863 (95\% CI $[0.843, 0.883]$) against 0.867 with them, so
+the overlap does not drive the headline result.
+
 \paragraph{Answer to RQ5.} Report accuracy on real charts, drawn by more than one
 renderer, against a pixel-free floor and a data-oracle ceiling, with confidence
 intervals, paired tests and validation-only selection; and test trained models directly
 for shortcuts, because a data audit alone did not catch the one that mattered.
 
-\section{Human Baseline}
+\section{Human Validation}
 \label{sec:human}
 
-A human baseline was designed and deployed: a web form showing 200 real test charts
-(10 per class; 2 for the inverted-U class) with the 20 findings in plain language, in a
-different random order for each annotator, with anonymous chart identifiers and no
-annotator able to see another's answers. At the time of writing one complete submission
-had been received and was \textbf{excluded}: it scored 0.050 (chance for 20 classes)
-with a median of 0.7 seconds per chart and the first option chosen for 58 of 200 charts,
-a click-through rather than an annotation. The human baseline is therefore not yet
-available and is reported as ongoing work (Chapter~\ref{ch:conclusion}).
+Two human studies were designed and deployed as web forms, each showing charts from real
+public data in a different random order to each annotator, with anonymous chart
+identifiers and no annotator able to see another's answers.
+
+\begin{itemize}[leftmargin=1.3em]
+  \item \textbf{Label check} (dataset validity). 188 real validation and test charts (up to 10
+  per class), each shown with the finding its label asserts, plus 25 \emph{decoys} shown with
+  a deliberately wrong finding from the same family. The annotator answers \emph{yes},
+  \emph{no} or \emph{cannot tell}. It measures how often a person confirms a label from the
+  chart alone, and the decoys measure attention.
+  \item \textbf{Baseline} (task difficulty). 200 different real test charts (10 per class; 2 for
+  the inverted-U class); the annotator chooses one of the 20 findings, as the models do.
+\end{itemize}
+
+The exclusion rule was fixed before any data was collected: an annotator is excluded if they
+accept more than 40\% of the decoys or answer in under 1.5 seconds per chart (median). The
+one submission received so far for the baseline study scored 0.050 (chance for 20 classes)
+at a median of 0.7 seconds per chart, choosing the first option for 58 of 200 charts, and
+falls under the rule. Results from at least three independent annotators per study are
+pending and will be reported with \texttt{train/human\_study\_eval.py}, which computes the
+confirmation and decoy-rejection rates, Fleiss' $\kappa$ and human accuracy.

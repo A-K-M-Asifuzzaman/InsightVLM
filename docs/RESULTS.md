@@ -38,9 +38,26 @@ Distribution shape is the weakest family (0.763 on real charts; 0.886–0.930 fo
 The commonest errors: bimodal read as right-skewed (19 of 100), heavy-tailed read as
 right-skewed (13 of 26), significant group difference read as none (12 of 100). Accuracy is
 lowest where real examples are rare: heavy tails 0.385 (n = 26), seasonality 0.462 (n = 13),
-left skew 0.474 (n = 19).
+left skew 0.474 (n = 19). These per-class numbers are indicative only: with n = 13–26 a class's
+95% interval spans roughly ±19 to ±27 points.
 
 ![Per-class accuracy](../paper/figures/fig_per_class.png)
+
+## Near-duplicates across splits
+
+`build/14_near_duplicates.py` compares every real validation/test chart with every real chart a
+model can train on (same arity). Signatures correlating above 0.99 are near-duplicates only when
+the data matches: time series within 5% in mean and spread; ≥ 50% identical (x, y) pairs or ≥ 90%
+identical values for sampled data; same categories and shares for compositions.
+
+| | Charts |
+|---|---|
+| Real test charts flagged | 85 of 1,192 (7.1%) |
+| Real validation charts flagged | 34 |
+
+Most are republished tables (World Bank vs Our World in Data internet use; repeated OpenML
+uploads). Ensemble accuracy on real test charts: **0.867 with them, 0.863 [0.843, 0.883] without**;
+0.918 on the flagged charts alone. IDs: `results/near_duplicates.json`.
 
 ## Grounding
 

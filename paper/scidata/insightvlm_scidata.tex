@@ -265,7 +265,7 @@ reproduces 3{,}998 of 4{,}000 labels (0.9995); the two exceptions lie within 1\%
 heteroscedasticity guard and fail to \emph{no class} rather than to a wrong class under
 a different \texttt{statsmodels} build. The integrity audit finds 0 of 654 source
 tables in more than one split, 0 duplicate data fingerprints and one visual duplicate
-among 20{,}000 images.
+among 20{,}000 images. A near-duplicate check (comparing every real validation and test chart with every trainable real chart of the same arity: signatures correlating above 0.99, then the same values, rows or series at matching scale) flags 85 real test charts (7.1\%) whose data also appears, under a different source table, in training data; most are republished tables (for example World Bank and Our World in Data internet-use series, or two uploads of the same OpenML dataset). Removing them changes the ensemble's real-chart accuracy from 0.867 to 0.863 (95\% CI $[0.843, 0.883]$); their identifiers are released so results can be reported on the deduplicated set.
 
 \subsection*{Shortcut audit}
 A shortcut is any feature that predicts the label without the statistical evidence.
@@ -362,11 +362,14 @@ definitions and were asked for one class name, with greedy decoding. All three
 produced a parseable class for more than 99.9\% of charts. They were evaluated on the
 matplotlib renders only.
 
-\paragraph{Human annotators.} A human baseline on 200 real test charts (10 per class; 2
-for the inverted-U class) has been deployed as a web form that shows each chart with the
-20 findings in plain language, in a different random order per annotator, with anonymous
-chart identifiers. It had no valid submission at the time of writing and will be reported
-with the published dataset.
+\paragraph{Human validation.} Two studies on real charts are deployed as web forms (random order
+per annotator, anonymous identifiers, annotators blind to each other). In the \emph{label
+check}, 188 charts are shown with the finding their label asserts and 25 decoys with a wrong
+finding from the same family; annotators answer yes, no or cannot tell, measuring label
+validity and, through the decoys, attention. In the \emph{baseline}, 200 other charts are
+classified into the 20 findings. Annotators who accept more than 40\% of decoys or answer in
+under 1.5 s per chart are excluded, a rule fixed before data collection. Results will be
+reported with the published dataset.
 
 \begin{table}[t]\centering\small
 \caption{Accuracy on the 1{,}192 real test charts drawn by three renderers, and on
@@ -418,7 +421,7 @@ for the other families) and in classes with few real examples: heavy tails (0.38
 $n=26$), seasonality (0.462, $n=13$) and left skew (0.474, $n=19$). The commonest
 confusions are between classes that differ in degree rather than kind: bimodal read as
 right-skewed (19 of 100), heavy-tailed read as right-skewed (13 of 26), and significant
-group differences read as none (12 of 100). Macro-F1 on real charts is 0.776.
+group differences read as none (12 of 100). Macro-F1 on real charts is 0.776. Per-class results for the rarest real classes are indicative only: with $n=13$ to $26$ real test charts, a class's 95\% interval spans roughly $\pm 19$ to $\pm 27$ points.
 
 \begin{figure}[t]\centering
 \includegraphics[width=\linewidth]{../figures/fig_results.pdf}
@@ -440,6 +443,8 @@ synthetic charts are easier; mixed accuracy hides the generalisation gap. Use
 test charts, and do not train on Vega-Lite. If the Plotly training renders are used for
 augmentation, the Plotly test renders measure a seen renderer and should be labelled so.
 \item \textbf{Report against the floor, not 5\%.} Chart type alone gives 0.288.
+\item \textbf{Also report the deduplicated test set.} \texttt{near\_duplicates.json} lists 85 real test
+charts whose data recurs in training data under another source table.
 \item \textbf{Do not flip images.} Horizontal or vertical flips change the label for
 roughly 30\% of samples.
 \item \textbf{Tune on validation only.} Real validation has 553 charts; selecting
