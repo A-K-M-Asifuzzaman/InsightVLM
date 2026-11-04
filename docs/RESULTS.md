@@ -59,6 +59,22 @@ Most are republished tables (World Bank vs Our World in Data internet use; repea
 uploads). Ensemble accuracy on real test charts: **0.867 with them, 0.863 [0.843, 0.883] without**;
 0.918 on the flagged charts alone. IDs: `results/near_duplicates.json`.
 
+## Human label check
+
+Two annotators (one an author) judged 188 real charts shown with their labelled finding, plus
+25 decoys with a wrong finding, from the chart alone. Exclusion rule (fixed in advance): more
+than 40% of decoys accepted; neither met it.
+
+| | |
+|---|---|
+| Labels confirmed / rejected / cannot tell | **0.737** [0.676, 0.790] / 0.168 / 0.096 |
+| Decoys rejected / accepted | 0.78 / 0.04 |
+| Agreement between annotators | 0.867 raw, Fleiss κ 0.68 |
+
+Confirmation is 0.95–1.00 for clear-cut findings but 0.25 for bimodal and heteroscedastic and
+0.40 for monotonic non-linear and anomaly-spike charts: statistically correct, visually subtle.
+Scoring: `train/human_study_eval.py`.
+
 ## Grounding
 
 Grad-CAM pointing game on 1,023 real test charts with evidence boxes:

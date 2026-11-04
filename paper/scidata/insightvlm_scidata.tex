@@ -362,14 +362,18 @@ definitions and were asked for one class name, with greedy decoding. All three
 produced a parseable class for more than 99.9\% of charts. They were evaluated on the
 matplotlib renders only.
 
-\paragraph{Human validation.} Two studies on real charts are deployed as web forms (random order
-per annotator, anonymous identifiers, annotators blind to each other). In the \emph{label
-check}, 188 charts are shown with the finding their label asserts and 25 decoys with a wrong
-finding from the same family; annotators answer yes, no or cannot tell, measuring label
-validity and, through the decoys, attention. In the \emph{baseline}, 200 other charts are
-classified into the 20 findings. Annotators who accept more than 40\% of decoys or answer in
-under 1.5 s per chart are excluded, a rule fixed before data collection. Results will be
-reported with the published dataset.
+\paragraph{Human validation.} In a label check, 188 real validation and test charts (up to 10
+per class) were shown with the finding their label asserts, mixed with 25 decoys showing a
+wrong finding from the same family; annotators answered yes, no or cannot tell from the chart
+alone, blind to each other and to the statistics. Annotators accepting more than 40\% of decoys
+were to be excluded (rule fixed in advance; none was). Two annotators, one an author, confirmed
+73.7\% of labels (95\% CI 67.6--79.0\%), rejected 16.8\% and could not tell for 9.6\%; they
+rejected 78\% of decoys and accepted 4\%, with Fleiss' $\kappa=0.68$ between them and 0.84--0.85
+agreement with their own repeat pass. Confirmation was 0.95--1.00 for clear-cut findings
+(trends, normal and uniform distributions, dominant category) but 0.25 for bimodal and
+heteroscedastic and 0.40 for monotonic non-linear and anomaly-spike charts: those labels are
+statistically correct but the finding is subtle to the eye, which users should keep in mind
+when treating the labels as what a reader would perceive.
 
 \begin{table}[t]\centering\small
 \caption{Accuracy on the 1{,}192 real test charts drawn by three renderers, and on

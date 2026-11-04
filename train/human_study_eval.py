@@ -32,6 +32,9 @@ def read(export, sub):
     for f in Path(export).glob(f"labels/*/{sub}/*.json"):
         d = json.loads(f.read_text())
         rows.append({"annotator": f.parts[-3], "item": f.stem, **d.get("data", d)})
+    if sub == "items":  # CSVs downloaded from the offline page (results/human_study/InsightVLM_label_check.html)
+        for f in Path(export).glob("*.csv"):
+            rows += pd.read_csv(f).to_dict("records")
     return pd.DataFrame(rows)
 
 
@@ -52,7 +55,7 @@ def main(export):
         per = lc.groupby("annotator").apply(lambda g: pd.Series({
             "decoy_accept": (g[g.kind == "decoy"].answer == "yes").mean(),
             "median_ms": g.ms.median(), "n": len(g)}))
-        keep = per[(per.decoy_accept <= MAX_DECOY_ACCEPT) & (per.median_ms >= MIN_MEDIAN_MS)].index
+        keep = per[(per.decoy_accept <= MAX_DECOY_ACCEPT) & (per.median_ms.isna() | (per.median_ms >= MIN_MEDIAN_MS))].index  # offline sheets carry no timing
         v = lc[lc.annotator.isin(keep) & (lc.kind == "label")]
         out["label_check"] = {
             "annotators": int(len(per)), "kept": int(len(keep)), "excluded": per.drop(keep).round(3).to_dict("index"),

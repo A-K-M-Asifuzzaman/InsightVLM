@@ -88,8 +88,10 @@ reported separately (Section~\ref{sec:rq1}).
   \item \textbf{The generative model was trained before the leak was found.} Its class
   accuracy on time series may be inflated; its numeric-fidelity result is not affected.
   Re-training it on version 2 was outside the compute budget.
-  \item \textbf{No completed human baseline.} The annotation study is deployed but has
-  no valid submission yet (Section~\ref{sec:human}).
+  \item \textbf{Small human study.} Two annotators, one an author, checked 188 labels
+  (Section~\ref{sec:human}); they confirmed 73.7\%, but only 25--40\% for four classes whose
+  findings are statistically true yet hard to see. No human classification baseline was
+  completed.
   \item \textbf{Compute.} All training used free T4 GPUs under a weekly quota, which
   limited the number of models, epochs and seeds; results come from single training runs
   per configuration, without seed variance.

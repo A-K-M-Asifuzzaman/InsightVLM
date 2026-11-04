@@ -296,24 +296,45 @@ for shortcuts, because a data audit alone did not catch the one that mattered.
 \section{Human Validation}
 \label{sec:human}
 
-Two human studies were designed and deployed as web forms, each showing charts from real
-public data in a different random order to each annotator, with anonymous chart
-identifiers and no annotator able to see another's answers.
+A \emph{label check} asked whether a person, looking only at the chart, agrees with the
+finding its label asserts. 188 real validation and test charts (up to 10 per class) were
+each shown with their labelled finding, mixed with 25 \emph{decoys} shown with a
+deliberately wrong finding from the same family, in one fixed random order with anonymous
+identifiers. Annotators answered \emph{yes}, \emph{no} or \emph{cannot tell} and did not
+see each other's answers or the statistics behind a label. The exclusion rule was fixed
+before data collection: an annotator who accepts more than 40\% of the decoys is excluded.
+Two annotators completed it (one is an author of this thesis), using an offline spreadsheet
+version that did not record response times; each also completed the sheet a second time.
 
-\begin{itemize}[leftmargin=1.3em]
-  \item \textbf{Label check} (dataset validity). 188 real validation and test charts (up to 10
-  per class), each shown with the finding its label asserts, plus 25 \emph{decoys} shown with
-  a deliberately wrong finding from the same family. The annotator answers \emph{yes},
-  \emph{no} or \emph{cannot tell}. It measures how often a person confirms a label from the
-  chart alone, and the decoys measure attention.
-  \item \textbf{Baseline} (task difficulty). 200 different real test charts (10 per class; 2 for
-  the inverted-U class); the annotator chooses one of the 20 findings, as the models do.
-\end{itemize}
+\begin{table}[h]\centering\small
+\caption{Label check: two annotators, 188 real labels and 25 decoys. The interval is a 95\%
+bootstrap over charts.}
+\label{tab:labelcheck}
+\begin{tabular}{lr}
+\toprule
+Labels confirmed (\emph{yes}) & 0.737 [0.676, 0.790] \\
+Labels rejected (\emph{no}) & 0.168 \\
+Cannot tell & 0.096 \\
+Decoys rejected / accepted & 0.78 / 0.04 \\
+Agreement between annotators (raw / Fleiss' $\kappa$) & 0.867 / 0.68 \\
+Agreement with own second pass & 0.84, 0.85 \\
+Labels rejected by both annotators & 25 of 188 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The exclusion rule was fixed before any data was collected: an annotator is excluded if they
-accept more than 40\% of the decoys or answer in under 1.5 seconds per chart (median). The
-one submission received so far for the baseline study scored 0.050 (chance for 20 classes)
-at a median of 0.7 seconds per chart, choosing the first option for 58 of 200 charts, and
-falls under the rule. Results from at least three independent annotators per study are
-pending and will be reported with \texttt{train/human\_study\_eval.py}, which computes the
-confirmation and decoy-rejection rates, Fleiss' $\kappa$ and human accuracy.
+Neither annotator met the exclusion rule. Both rejected the decoys and confirmed most
+labels, with substantial agreement (Table~\ref{tab:labelcheck}). Confirmation is not uniform
+across classes: it is 0.95--1.00 for the clear-cut findings (normal, uniform and right-skewed
+distributions, trends, dominant category, no group difference, inverted-U), but 0.25 for
+bimodal and heteroscedastic, and 0.40 for monotonic non-linear and anomaly-spike charts. The
+labels in those classes are statistically correct (re-running the tests reproduces them), so
+a rejection means that the finding is true of the data but not evident to a person from the
+chart at this size: a two-component mixture with modest separation, or a residual spread
+that widens by the required ratio, is easy to test and hard to see. Bimodal charts are also the
+models' commonest error (Section~\ref{sec:rq1}). We read this as a property of the
+task, not as label noise: the dataset labels what the data shows, and some of what the data
+shows is subtle. With two annotators, one of them an author, the study is a validity check
+rather than a full annotation campaign, and per-class rates rest on 10--20 judgements each.
+A human classification baseline (choosing one of the 20 findings) was designed but not
+completed.
