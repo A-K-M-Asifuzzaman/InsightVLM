@@ -63,6 +63,12 @@ MEMBERS = [
     # nb7: nb5x + renderer augmentation (Plotly + randomised matplotlib styles)
     ("r101_384_real50_xp", RES / "nb7/r101/r101_384_real50_xp_best.pt", "resnet101", False, 384),
     ("d121_384_real50_xp", RES / "nb7/d121/d121_384_real50_xp_best.pt", "densenet121", False, 384),
+    # extra training seeds of the two deployed members, for training-variance estimates only
+    # (not in V2, so never deployed or used in ensemble selection)
+    ("r101_384_real50_xp_s2", RES / "nb7/r101_s2/r101_384_real50_xp_s2_best.pt", "resnet101", False, 384),
+    ("r101_384_real50_xp_s3", RES / "nb7/r101_s3/r101_384_real50_xp_s3_best.pt", "resnet101", False, 384),
+    ("d121_384_real50_xp_s2", RES / "nb7/d121_s2/d121_384_real50_xp_s2_best.pt", "densenet121", False, 384),
+    ("d121_384_real50_xp_s3", RES / "nb7/d121_s3/d121_384_real50_xp_s3_best.pt", "densenet121", False, 384),
 ]
 # Everything above nb5 was trained on v1 images, where time-series charts carry
 # label-dependent marks (see train/ablate_marks.py). Only these may be deployed.

@@ -72,7 +72,7 @@ The deployed ensemble (the equal-weight average of the two full-recipe models) r
 \textbf{0.867} on the 1{,}192 real test charts (95\% CI $[0.846, 0.886]$) and
 \textbf{0.999} on synthetic ones, $0.959$ over all 4{,}000 test charts. Macro-F1 on
 real charts is $0.776$, lower than accuracy because the rarest real classes are also
-the hardest.
+the hardest. Retraining both members with two further random seeds, and nothing else changed, gives real-chart accuracies of 0.867, 0.863 and 0.858 (mean $0.863 \pm 0.004$, s.d.\ over 3 seeds); Plotly $0.857 \pm 0.006$, Vega-Lite $0.713 \pm 0.012$ and synthetic $0.999 \pm 0.000$ (\texttt{train/seed\_variance.py}). The deployed run is the best of the three on matplotlib charts but within one standard deviation of the mean, so training variance is small next to the test-set interval.
 
 \begin{table}[h]\centering\small
 \caption{Accuracy on the 1{,}192 real test charts drawn by three plotting libraries,

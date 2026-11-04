@@ -1,0 +1,79 @@
+{
+  "per_seed": {
+    "1": {
+      "real_matplotlib": 0.8666107382550335,
+      "synthetic": 0.9985754985754985,
+      "real_plotly": 0.8565436241610739,
+      "real_vega": 0.7156040268456376
+    },
+    "2": {
+      "real_matplotlib": 0.863255033557047,
+      "synthetic": 0.9982193732193733,
+      "real_plotly": 0.8506711409395973,
+      "real_vega": 0.7239932885906041
+    },
+    "3": {
+      "real_matplotlib": 0.8582214765100671,
+      "synthetic": 0.9985754985754985,
+      "real_plotly": 0.8624161073825504,
+      "real_vega": 0.6996644295302014
+    }
+  },
+  "members": {
+    "r101_384_real50_xp": {
+      "real_matplotlib": 0.8590604026845637,
+      "synthetic": 0.9978632478632479,
+      "real_plotly": 0.8540268456375839,
+      "real_vega": 0.6501677852348994
+    },
+    "d121_384_real50_xp": {
+      "real_matplotlib": 0.8548657718120806,
+      "synthetic": 0.9978632478632479,
+      "real_plotly": 0.8523489932885906,
+      "real_vega": 0.712248322147651
+    },
+    "r101_384_real50_xp_s2": {
+      "real_matplotlib": 0.8456375838926175,
+      "synthetic": 0.9943019943019943,
+      "real_plotly": 0.8414429530201343,
+      "real_vega": 0.6434563758389261
+    },
+    "d121_384_real50_xp_s2": {
+      "real_matplotlib": 0.8515100671140939,
+      "synthetic": 0.9985754985754985,
+      "real_plotly": 0.8489932885906041,
+      "real_vega": 0.7105704697986577
+    },
+    "r101_384_real50_xp_s3": {
+      "real_matplotlib": 0.860738255033557,
+      "synthetic": 0.9985754985754985,
+      "real_plotly": 0.8145973154362416,
+      "real_vega": 0.636744966442953
+    },
+    "d121_384_real50_xp_s3": {
+      "real_matplotlib": 0.8406040268456376,
+      "synthetic": 0.9914529914529915,
+      "real_plotly": 0.8515100671140939,
+      "real_vega": 0.6937919463087249
+    }
+  },
+  "ensemble_mean_sd": {
+    "real_matplotlib": [
+      0.8627,
+      0.0042
+    ],
+    "real_plotly": [
+      0.8565,
+      0.0059
+    ],
+    "real_vega": [
+      0.7131,
+      0.0124
+    ],
+    "synthetic": [
+      0.9985,
+      0.0002
+    ]
+  },
+  "n_seeds": 3
+}

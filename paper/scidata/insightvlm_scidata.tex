@@ -406,7 +406,7 @@ Statistical oracle (ceiling)            & \multicolumn{4}{c}{0.9995 (all test ch
 
 Table~\ref{tab:results} and Figure~\ref{fig:results} summarise the baselines. The deployed
 ensemble, the equal-weight average of the two full-recipe models, reaches 0.867 on real
-test charts and 0.999 on synthetic ones. Every zero-shot vision--language model is far
+test charts and 0.999 on synthetic ones. Retraining both members with two further random seeds, and nothing else changed, gives real-chart accuracies of 0.867, 0.863 and 0.858 (mean $0.863 \pm 0.004$, s.d.\ over 3 seeds); Plotly $0.857 \pm 0.006$, Vega-Lite $0.713 \pm 0.012$ and synthetic $0.999 \pm 0.000$ (\texttt{train/seed\_variance.py}). The deployed run is the best of the three on matplotlib charts but within one standard deviation of the mean, so training variance is small next to the test-set interval. Every zero-shot vision--language model is far
 below it (best 0.468; exact McNemar $p<10^{-100}$ for each pairwise comparison), and the
 weakest, Qwen2.5-VL-3B, is barely above the 0.288 no-pixel floor: naming a statistical
 finding from a chart is not something current general-purpose VLMs do reliably without

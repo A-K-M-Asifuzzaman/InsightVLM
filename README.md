@@ -49,6 +49,7 @@ Brackets: 95% bootstrap confidence intervals. ¹ On a fixed 400-chart synthetic 
 The ensemble beats every zero-shot model on the same charts (exact McNemar *p* < 10⁻¹⁰⁰).
 Removing the 85 real test charts whose data also appears in training data under another source
 table (near-duplicates, `build/14_near_duplicates.py`) gives 86.3% [84.3, 88.3].
+Across three training seeds the recipe scores 86.3% ± 0.4 on real charts (`train/seed_variance.py`).
 
 ![Results](paper/figures/fig_results.png)
 

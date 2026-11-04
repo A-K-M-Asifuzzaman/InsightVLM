@@ -26,6 +26,11 @@ the ensemble scores 0.959; macro-F1 on real charts is 0.776. Against Qwen3-VL-8B
 is right on 511 charts where it is wrong and wrong on 36 where it is right (exact McNemar
 p < 10⁻¹⁰⁰).
 
+**Seed variance** (`train/seed_variance.py`): retraining both members with two more seeds
+gives real-chart accuracy 0.867 / 0.863 / 0.858, mean **0.863 ± 0.004** (s.d., 3 seeds);
+Plotly 0.857 ± 0.006, Vega-Lite 0.713 ± 0.012, synthetic 0.999 ± 0.000. The deployed run is
+the best of the three on matplotlib charts, within one s.d. of the mean.
+
 **Renderer augmentation** is the step that matters for other plotting libraries: Plotly is
 seen in augmentation, so its gap closes; Vega-Lite is never seen, and accuracy on it still
 rises from 0.60–0.64 to 0.65–0.71 per model without costing matplotlib accuracy.
