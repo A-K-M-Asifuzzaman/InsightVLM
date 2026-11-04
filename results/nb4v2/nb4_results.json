@@ -1,0 +1,10 @@
+{
+  "n_train": 4000,
+  "n_eval": 300,
+  "class_accuracy": 0.7866666666666666,
+  "numeric_fidelity": 0.13927034077034076,
+  "by_provenance": {
+    "real": 0.6585,
+    "synthetic": 0.8349
+  }
+}

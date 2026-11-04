@@ -15,8 +15,8 @@ from 654 real public tables held in source-disjoint splits and a supplementary p
   0.867 accuracy (95\% CI $[0.846, 0.886]$) and of a synthetic chart with 0.999, without
   a supplied question. Zero-shot vision--language models reach at most 0.468.
   \item[RQ2.] A deterministic pipeline on the data table is right 99.95\% of the time and
-  exact. A QLoRA-tuned generative VLM names the finding 80\% of the time but cites
-  correct numbers only 13.8\% of the time.
+  exact. A QLoRA-tuned generative VLM names the finding 78.7\% of the time but cites
+  correct numbers only 13.9\% of the time.
   \item[RQ3.] The model's Grad-CAM peak falls inside a verified evidence box on 52.4\% of real
   charts against 43.9\% for a random point: grounded beyond chance for time series, group
   comparisons and relationships, but not for distributions.
@@ -54,8 +54,8 @@ and they are the ones we can defend.
   visual salience as well as by statistics changes what models learn.
   \item \textbf{Close the unseen-renderer gap} with more rendering libraries in training
   (Excel-style, ggplot2, D3) and with charts taken from real documents.
-  \item \textbf{Re-train the generative model on version 2} with a larger backbone and
-  the full training set, and optimise it for numeric fidelity, not only class accuracy.
+  \item \textbf{Scale the generative model} to a larger backbone and the full training set,
+  and optimise it for numeric fidelity, not only class accuracy.
   \item \textbf{Multi-label findings}, so a chart can show a trend and an anomaly at once.
   \item \textbf{More real data for rare classes} (heavy tails, seasonality, left skew,
   inverted-U relationships), which are also the weakest classes.

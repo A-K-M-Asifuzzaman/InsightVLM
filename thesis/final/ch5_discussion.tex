@@ -85,9 +85,9 @@ reported separately (Section~\ref{sec:rq1}).
   clean inverted-U relationships exist in 719 real tables.
   \item \textbf{Single label.} Charts showing two findings were excluded, so models will
   not report a trend and an anomaly together.
-  \item \textbf{The generative model was trained before the leak was found.} Its class
-  accuracy on time series may be inflated; its numeric-fidelity result is not affected.
-  Re-training it on version 2 was outside the compute budget.
+  \item \textbf{A small generative model.} The generative result comes from a 2B-parameter
+  model trained for one epoch on 4,000 samples and scored on 300 charts (82 real), so its
+  real-chart accuracy has a wide interval.
   \item \textbf{Small human study.} Two annotators, one an author, checked 188 labels
   (Section~\ref{sec:human}); they confirmed 73.7\%, but only 25--40\% for four classes whose
   findings are statistically true yet hard to see. No human classification baseline was

@@ -167,12 +167,14 @@ within 1\% of a guard threshold and fall to \emph{no class} rather than to a wro
 Its numbers are exact by construction.
 
 The generative model (Qwen2-VL-2B with QLoRA, Section~\ref{sec:models}) was evaluated on
-a 300-chart test subset. It named the correct finding for $0.800$ of charts ($0.683$ on
-real, $0.844$ on synthetic), but \textbf{only 13.8\% of the numbers it cited matched the
-ground-truth statistics}. It has learned the vocabulary and structure of statistical
-reasoning while largely inventing the supporting numbers. This model was trained and
-scored on version-1 renders; its class accuracy on time series may be inflated by the
-leak, but numeric fidelity concerns the numbers in its text and is not affected by marks.
+a 300-chart test subset after training on version-2 renders. It named the correct finding
+for $0.787$ of charts (95\% CI $[0.740, 0.833]$; $0.659$ on the 82 real charts, $0.835$ on
+synthetic), but \textbf{only 13.9\% of the numbers it cited matched the ground-truth
+statistics}. It has learned the vocabulary and structure of statistical reasoning while
+largely inventing the supporting numbers. The same model trained on version-1 renders
+scored $0.800$, with $1.000$ on time series against $0.947$ on version 2 and identical
+results on the other families: the leak inflated its time-series accuracy, as it did for
+the CNNs, while numeric fidelity was unchanged ($0.138$ against $0.139$).
 
 \paragraph{Answer to RQ2.} Far below. The rule-based pipeline is essentially always right
 and exact; the generative model is right about the finding four times in five but cites

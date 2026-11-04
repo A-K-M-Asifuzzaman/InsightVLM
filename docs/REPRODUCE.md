@@ -38,7 +38,8 @@ python train/make_split_notebooks.py    # writes notebooks/*.ipynb
 | `nb5x_r101`, `nb5x_r50`, `nb5x_d121` | + supplementary real pool |
 | `nb7_r101`, `nb7_d121` | + renderer augmentation (deployed members) |
 | `nb6_zeroshot`, `nb6b_zeroshot_ts` | zero-shot Qwen VLM baselines |
-| `nb4_vlm` | Qwen2-VL-2B + QLoRA generative model |
+| `nb4_vlm`, `nb4v2_vlm` | Qwen2-VL-2B + QLoRA generative model (version-1 / version-2 renders) |
+| `nb7_{r101,d121}_s{2,3}` | extra training seeds of the deployed members (`train/seed_variance.py`) |
 
 Each notebook writes `<tag>_best.pt` and `<tag>_probs.npz` (validation and test
 probabilities). Put checkpoints under `results/nb5/`, `results/nb5x/<arch>/`,

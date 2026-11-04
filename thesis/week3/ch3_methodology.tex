@@ -324,8 +324,8 @@ $0.83\%$ of the model), trained one epoch on $4{,}000$ samples. The supervision
 target is the reasoning chain plus the insight, so the model learns to produce
 evidence-grounded prose rather than a class identifier. Numeric fidelity is the share
 of numbers the model cites that match the ground-truth statistics to two decimals.
-This model was trained and evaluated on version-1 renders before the leak was found;
-Chapter~\ref{ch:results} reports it with that caveat.
+It was first trained on version-1 renders and re-trained on version 2 with the same
+settings once the leak was found; Chapter~\ref{ch:results} reports the version-2 model.
 
 \subsection{Evidence-Grounding Evaluation (O4)}
 

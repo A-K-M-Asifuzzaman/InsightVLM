@@ -92,10 +92,12 @@ distributions — whose shape is a property of the whole plot rather than one re
 
 ## Generative model
 
-Qwen2-VL-2B + QLoRA (300-chart subset, version-1 renders): names the correct finding 80.0%
-of the time (68.3% real, 84.4% synthetic) but only 13.8% of the numbers it cites match the
+Qwen2-VL-2B + QLoRA (300-chart subset, version-2 renders): names the correct finding 78.7%
+[74.0, 83.3] of the time (65.9% real, 83.5% synthetic) but only 13.9% of the numbers it cites match the
 ground-truth statistics. The deterministic pipeline on the data table is right 99.95% of
-the time and exact.
+the time and exact. Trained on version-1 renders the same model scored 80.0%, with 100% on
+time series against 94.7% on version 2 and identical results elsewhere: the leak inflated its
+time-series accuracy too; numeric fidelity did not change (13.8%).
 
 ## The rendering leak
 

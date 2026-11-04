@@ -46,7 +46,7 @@ trained models (86.2%) and greedy selection on validation (86.5%).
 class names and one-line definitions and answer with one name (greedy decoding).
 
 **Generative model.** Qwen2-VL-2B with QLoRA (r = 16, 4-bit NF4), one epoch on 4,000 samples,
-trained to write the reasoning chain and insight. It was trained on version-1 renders.
+trained to write the reasoning chain and insight, on version-2 renders (`nb4v2_vlm`).
 
 ## Evaluation protocol
 
