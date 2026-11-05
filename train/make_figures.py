@@ -1,7 +1,7 @@
 """
-make_figures.py — Every figure in the Scientific Data manuscript, from saved results.
+make_figures.py — Result figures, from saved results.
 
-    python paper/make_figures.py        # -> paper/figures/*.pdf (+ .png previews)
+    python train/make_figures.py        # -> docs/figures/*.pdf (+ .png previews)
 
 Figures whose inputs don't exist yet are skipped with a note, so this can be
 re-run as results arrive.
@@ -19,7 +19,7 @@ from PIL import Image            # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA, RES = ROOT / "dataset", ROOT / "results"
-OUT = ROOT / "paper" / "figures"
+OUT = ROOT / "docs" / "figures"
 
 # reference palette, light mode: categorical slots in fixed order + text inks
 S1, S2, S3 = "#2a78d6", "#eb6834", "#1baf7a"

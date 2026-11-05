@@ -6,8 +6,7 @@ difference, and 16 more — with labels that a named statistical test has confir
 exact data plotted.
 
 **[▶ Try the live demo](https://huggingface.co/spaces/AsifZaman1912/InsightVLM)** ·
-[Thesis (PDF)](thesis/main.pdf) ·
-[Paper draft (PDF)](paper/scidata/insightvlm_scidata.pdf) ·
+[Dataset (Zenodo)](https://doi.org/10.5281/zenodo.23968282) ·
 [Documentation](docs/)
 
 ![InsightVLM chart tester](docs/assets/demo.png)
@@ -51,7 +50,7 @@ Removing the 85 real test charts whose data also appears in training data under 
 table (near-duplicates, `build/14_near_duplicates.py`) gives 86.3% [84.3, 88.3].
 Across three training seeds the recipe scores 86.3% ± 0.4 on real charts (`train/seed_variance.py`).
 
-![Results](paper/figures/fig_results.png)
+![Results](docs/figures/fig_results.png)
 
 What the numbers say:
 
@@ -76,9 +75,7 @@ InsightVLM/
 ├── deploy/         ONNX export and the in-browser demo (deploy/web)
 ├── results/        final metrics, per-model probabilities, statistics (small files only)
 ├── dataset/        class index, datasheet and bias-audit report (the images are released separately)
-├── paper/          manuscript draft and figure scripts
-├── thesis/         thesis source (LaTeX) and PDF
-├── docs/           documentation
+├── docs/           documentation and figures
 ├── app.py          local Gradio tester
 └── run_all.py      end-to-end dataset build
 ```
@@ -135,7 +132,9 @@ Phitron AI/ML Thesis Track.
   title  = {InsightVLM-20K: Chart Images Paired with Statistically Verified Findings},
   author = {Asifuzzaman, A K M and Jisan, Robiul Hasan and Alif, Fahim Khan and Iftee, Iftehad Kamal and Arfat, Mohammad},
   year   = {2026},
-  url    = {https://github.com/A-K-M-Asifuzzaman/InsightVLM}
+  publisher = {Zenodo},
+  doi    = {10.5281/zenodo.23968282},
+  url    = {https://doi.org/10.5281/zenodo.23968282}
 }
 ```
 

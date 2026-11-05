@@ -54,7 +54,7 @@ python train/final_ensemble.py               # → results/final_ensemble.json
 python train/stats_report.py                 # → results/stats_report.json, stats_table.tex
 python train/grounding_eval.py               # → results/grounding.json
 python train/ablate_marks.py                 # rendering-leak ablation → results/ablate_marks.csv
-python paper/make_figures.py                 # → paper/figures/
+python train/make_figures.py                 # → docs/figures/
 ```
 
 The probabilities for every deployed and ablation member are already in `results/probs/`, so

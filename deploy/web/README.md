@@ -21,4 +21,4 @@ The model (an equal-weight ensemble of ResNet-101 and DenseNet-121 at 384×384) 
 the browser with ONNX Runtime Web; images never leave the visitor's computer.
 Test accuracy: 86.7% on 1,192 real charts, 99.9% on synthetic charts.
 
-Code, documentation and thesis: https://github.com/A-K-M-Asifuzzaman/InsightVLM
+Code and documentation: https://github.com/A-K-M-Asifuzzman/InsightVLM

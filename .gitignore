@@ -33,20 +33,18 @@ __pycache__/
 results/nb6/v1_*
 results/nb6b/
 
-# superseded or internal documents
-docs/InsightVLM_*
-docs/*.zip
-docs/supervisor_email.md
-docs/problem_statement_and_rqs.md
-docs/make_*.py
-docs/kaggle_*
-docs/week2/SYNTHESIS.md
-docs/week2/README.md
-docs/week2/PASTE_INTO_TEMPLATE.csv
-docs/week2/rebuild_workbooks.py
-paper/insightvlm.*
-thesis/figures/fig[123]_*
-thesis.zip
+# documentation: only the published pages and figures
+docs/*
+!docs/DATASET.md
+!docs/DEMO.md
+!docs/METHODS.md
+!docs/REPRODUCE.md
+!docs/RESULTS.md
+!docs/assets/
+!docs/figures/
+docs/figures/*.pdf
+
+# superseded results
 results/FINAL_RESULTS.json
 results/final_table.tex
 results/final_ensemble_v1_leaky.json
@@ -58,3 +56,7 @@ results/nb*/*_probs.npz
 results/nb4v2/insightvlm-lora/
 results/nb4v2/*.log
 results/nb7/*/*.log
+
+# manuscripts are kept out of the code repository
+thesis/
+paper/

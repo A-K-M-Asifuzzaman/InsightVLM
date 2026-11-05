@@ -37,7 +37,7 @@ rises from 0.60–0.64 to 0.65–0.71 per model without costing matplotlib accur
 
 ## Where the model fails
 
-![Confusion matrix](../paper/figures/fig_confusion.png)
+![Confusion matrix](figures/fig_confusion.png)
 
 Distribution shape is the weakest family (0.763 on real charts; 0.886–0.930 for the others).
 The commonest errors: bimodal read as right-skewed (19 of 100), heavy-tailed read as
@@ -46,7 +46,7 @@ lowest where real examples are rare: heavy tails 0.385 (n = 26), seasonality 0.4
 left skew 0.474 (n = 19). These per-class numbers are indicative only: with n = 13–26 a class's
 95% interval spans roughly ±19 to ±27 points.
 
-![Per-class accuracy](../paper/figures/fig_per_class.png)
+![Per-class accuracy](figures/fig_per_class.png)
 
 ## Near-duplicates across splits
 
@@ -117,7 +117,7 @@ marks, identical otherwise, measures how much version-1 models relied on them:
 | level shift | 1.000 | 0.355 | 1.000 | 0.705 |
 | seasonal (never marked) | 0.970 | 0.970 | 0.990 | 0.990 |
 
-![Marks ablation](../paper/figures/fig_marks_ablation.png)
+![Marks ablation](figures/fig_marks_ablation.png)
 
 The seasonal class, which never carried a mark, did not move — isolating the cause. The
 eleven-test shortcut audit had passed, because it examines data and pixel statistics, not
