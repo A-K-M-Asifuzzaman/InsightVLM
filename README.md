@@ -119,9 +119,9 @@ Training ran on Kaggle (2× T4) from the notebooks in `notebooks/`. The full seq
 
 ## Data availability
 
-The dataset (v2) is hosted on Kaggle and will be deposited in a public archive with a DOI
-alongside the paper. Until then, contact the authors for access. The class index, datasheet
-and bias-audit report are in [`dataset/`](dataset/).
+The dataset (v2) is archived on Zenodo, [doi:10.5281/zenodo.23968282](https://doi.org/10.5281/zenodo.23968282)
+(CC BY 4.0), and mirrored on [Kaggle](https://www.kaggle.com/datasets/asifxzaman/insightvlm-20k-v2).
+The class index, datasheet and bias-audit report are also in [`dataset/`](dataset/).
 
 ## Team
 

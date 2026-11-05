@@ -224,7 +224,7 @@ the dominant wedge).
 % =====================================================================
 \section*{Data Records}
 
-The dataset is deposited at \TBD{Zenodo/Figshare DOI} under CC BY 4.0 and mirrored on
+The dataset is deposited at Zenodo (\href{https://doi.org/10.5281/zenodo.23968282}{doi:10.5281/zenodo.23968282}) under CC BY 4.0 and mirrored on
 Kaggle (\url{https://www.kaggle.com/datasets/asifxzaman/insightvlm-20k-v2}).
 Table~\ref{tab:files} lists the files.
 
@@ -241,9 +241,12 @@ Table~\ref{tab:files} lists the files.
 \texttt{splits/\{train,val,test\}.jsonl} & records per split \\
 \texttt{splits/test\_real\_only.jsonl} & the 1{,}192 real-source test samples \\
 \texttt{instruct/\{split\}.jsonl} & image/prompt/response triples for instruction tuning \\
-\texttt{test\_renders/\{plotly,vega\}/} & Plotly and Vega-Lite re-renders of the 1{,}192 real test charts \\
-\texttt{train\_extra/} & supplementary real training pool: 2{,}545 images and \texttt{records\_extra.jsonl} \\
-\texttt{train\_aug/\{plotly,mplrand\}/} & alternative renders of every training and supplementary chart \\
+\texttt{images\_vega/<class>/} & Vega-Lite re-renders of the 1{,}192 real test charts \\
+\texttt{images\_plotly/<class>/} & Plotly re-renders of the 1{,}192 real test charts and of every training and supplementary chart \\
+\texttt{images\_extra/} & supplementary real training pool: 2{,}545 images and \texttt{records.jsonl} \\
+\texttt{images\_mplrand/<class>/} & randomised-style matplotlib renders of every training and supplementary chart \\
+\texttt{ablate\_\{clean,marked\}/} & 1{,}000 test charts drawn without and with the version-1 marks (rendering-leak ablation) \\
+\texttt{near\_duplicates.csv} & held-out charts whose data also appears in training data under another source table \\
 \texttt{class\_index.json} & label $\leftrightarrow$ id map, class descriptions, valid chart types, tests \\
 \texttt{DATASHEET.md}, \texttt{BIAS\_AUDIT.md} & datasheet\cite{datasheets} and audit report \\
 \bottomrule
@@ -469,12 +472,16 @@ frequencies.
 \section*{Code Availability}
 The complete pipeline (harvesting, mining, synthesis, the verification battery,
 rendering, validation, export, the shortcut audit, the Plotly renderer, training
-notebooks, ensembling, statistics and figures) is available at \TBD{repository URL}.
+notebooks, ensembling, statistics and figures) is available at \url{https://github.com/A-K-M-Asifuzzman/InsightVLM} under the MIT licence.
 The corpus rebuilds end to end in under an hour on a laptop CPU.
 
 % =====================================================================
 \section*{Author Contributions}
-\TBD{Contributions per author.}
+A.K.M.A.\ conceived the study, designed the dataset pipeline and verification battery,
+wrote the software, trained and evaluated the models, made the figures and wrote the
+manuscript. R.\ annotated charts for the human label check, checked results and reviewed
+and edited the manuscript. F.A., I.\ and M.A.Y.\ took part in discussions of the study design and results and reviewed the manuscript. All authors
+approved the final manuscript.
 
 \section*{Competing Interests}
 The authors declare no competing interests.
