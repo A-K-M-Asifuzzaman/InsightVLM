@@ -90,7 +90,7 @@ Re-running the battery on the stored tables reproduces 3,998 of 4,000 test label
 | Synthetic | 13,917 | – | CC0 (generated) |
 | **Total** | **6,083 real + 13,917 synthetic** | **654** | |
 
-Real data cannot fill every class: 719 public tables contained only ten clean inverted-U relationships. The corpus is therefore a **declared hybrid**. Every class mixes real and synthetic charts, in different proportions, so provenance alone does not predict the label. Per-class real/synthetic counts are in `DATASHEET.md`.
+Real data cannot fill every class: 719 public tables contained only ten clean inverted-U relationships. The corpus is therefore a **declared hybrid**. Every class mixes real and synthetic charts, in different proportions, so provenance is only a weak predictor of the label (a real-vs-synthetic rule alone reaches about 7.5% accuracy, against 5% chance). Per-class real/synthetic counts are in `DATASHEET.md`.
 
 ## Splits
 
@@ -106,7 +106,7 @@ Real data cannot fill every class: 719 public tables contained only ten clean in
 
 **Near-duplicates across splits.** The same data can appear under two source tables, for example in both World Bank and Our World in Data. `build/14_near_duplicates.py` flags **85 real test charts** with near-duplicate data in training. Report results on the deduplicated set as well; see [RESULTS.md](RESULTS.md#near-duplicates-across-splits).
 
-**Supplementary real training pool.** Balance caps real data at 500 per class, which left verified real candidates unused. `build/12_extra_real.py` keeps those whose source table hashes to *train* (at most 400 per class, exact duplicates removed) and asserts that no validation or test source contributes. This gives **2,545 extra real training charts**.
+**Supplementary real training pool.** Balance caps real data at 500 per class, which left verified real candidates unused. `build/12_extra_real.py` keeps those whose source table hashes to *train* (at most 400 per class, exact duplicates removed) and asserts that no validation or test source contributes. This gives **2,545 extra real training charts**. These 2,545 charts are **in addition to** the 20,000-chart corpus and are not part of any split file.
 
 ## Files
 
@@ -147,8 +147,3 @@ Chart type *is* associated with the label by construction (a pie chart can only 
 | **Reproducible styles** | Style is chosen from a CRC32 hash of the sample id. Version 1 used Python's salted `hash()`, which changes between runs. |
 | **Dates on time axes** | Epoch-microsecond timestamps are now drawn as calendar dates. |
 | **Extra renders** | Plotly and Vega-Lite re-renders of the real test charts, plus training renders (Plotly, randomised matplotlib styles) for augmentation. |
-
-## Licence and contact
-
-- **Dataset licence:** `[TODO: choose]`. Per-sample source licences are in each record and must be respected.
-- **Contact:** `[TODO: add maintainer email]`

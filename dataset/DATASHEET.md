@@ -1,6 +1,6 @@
 # InsightVLM-20K
 
-**A balanced benchmark for turning chart images into verified statistical findings.**
+**Version 2.** A balanced benchmark for turning chart images into verified statistical findings.**
 
 Give a model a chart. It should recover the data, name the statistical pattern, cite the numbers that prove it, and point to where in the image the evidence is. InsightVLM-20K supplies the chart and all of those answers, and every answer has been checked by a statistical test run on the plotted data.
 
@@ -13,7 +13,7 @@ Give a model a chart. It should recover the data, name the statistical pattern, 
 | **Splits** | train 14,000 · val 2,000 · test 4,000 (700 / 100 / 200 per class) |
 | **Provenance** | 30.4% real-seeded (6,083) · 69.6% controlled-synthetic (13,917) |
 | **Real source tables** | 654 |
-| **Label audit** | 100% re-verified, 0 leaked sources, 0 duplicates |
+| **Label audit** | 100% re-verified on the build environment (99.95% on a different library build, Section 10), 0 leaked sources, 0 duplicates |
 
 > **Read this before reporting results.** About 70% of the data is synthetic. Always report the **real-only test probe** (Section 6) next to the full test score, and compare against the **chart-type prior of 0.288**, not the 5% majority baseline (Section 8).
 
@@ -86,7 +86,7 @@ Real data cannot balance these classes: public corpora hold thousands of right-s
 
 ### Real vs synthetic mix per class
 
-Every class mixes both tracks, so no class is purely real or purely synthetic and provenance alone cannot predict the label.
+Every class mixes both tracks, so no class is purely real or purely synthetic. The mix still differs by class (from 9 to 500 real per 1,000), so provenance is a weak label predictor: a rule that knows only real vs synthetic and guesses that group's most common class is right on 1,491 of 20,000 samples (7.5%, against 5% chance). The real-only probe in Section 6 is reported for this reason.
 
 | Class | Real | Synthetic | | Class | Real | Synthetic |
 |---|---:|---:|---|---|---:|---:|
@@ -126,6 +126,8 @@ Splits are 70 / 10 / 20 train / val / test, exactly 700 / 100 / 200 per class.
 - **Real data is source-disjoint.** A source table goes wholly to one split, so nothing derived from `openml/61_iris` appears in both train and test.
 - **Synthetic data cannot leak.** Each synthetic sample has a unique source id.
 
+**Near-duplicates across splits.** The same data can appear under two source tables (for example World Bank and Our World in Data), so source-disjoint splits do not fully prevent overlap. 85 real test charts have near-duplicate data in training; report results on the deduplicated set as well.
+
 ### Recommended reporting
 
 | Report | Why |
@@ -158,15 +160,15 @@ A *shortcut* is any feature that predicts the label without containing the stati
 | Split balance | max s.d. of proportions | 0.0000 | < 0.01 | ✓ |
 | Chart type → label | pixel-free prior accuracy | 0.2883 | < 0.40 | ✓ |
 | Render style → label | Cramér's V | 0.0000 | < 0.05 | ✓ |
-| Provenance detectable | ROC AUC | 0.548 | < 0.75 | ✓ |
+| Provenance detectable | ROC AUC | 0.551 | < 0.75 | ✓ |
 | Axis-text shortcut | macro-F1 | 0.3688 | < 0.55 | ✓ |
-| Pixel-stat shortcut | macro-F1 | 0.4078 | < 0.55 | ✓ |
+| Pixel-stat shortcut | macro-F1 | 0.4038 | < 0.55 | ✓ |
 | Source concentration | max top-source share | 17.2% | < 35% | ✓ |
 | Length confound (within family) | max/min median n | 2.04 | < 4.0 | ✓ |
 | Subject-domain balance | max domain share | 22.8% | < 45% | ✓ |
 | Category-vocabulary spread | max vocabulary share | 13.0% | < 35% | ✓ |
 
-**Can a model just spot synthetic charts?** A classifier on low-level pixel statistics separates real from synthetic at AUC 0.548, close to chance (0.5), so the two are not easily distinguished at the pixel level.
+**Can a model just spot synthetic charts?** A classifier on low-level pixel statistics separates real from synthetic at AUC 0.551, close to chance (0.5), so the two are not easily distinguished at the pixel level.
 
 **Chart type is tied to the label by design, and disclosed.** A pie chart can only carry a composition finding; a QQ plot only a distribution finding. The chart-type prior (**0.2883**) is therefore the evaluation floor. Comparing against the 5% majority baseline would overstate every result by about 24 points.
 
@@ -176,12 +178,12 @@ A *shortcut* is any feature that predicts the label without containing the stati
 
 **Intended for:** training and benchmarking chart-to-insight models, statistical-reasoning evaluation, table reconstruction, and grounded chart QA.
 
-**Not suited for:** estimating how often each finding occurs in the real world, or claims about performance on charts from other renderers.
+**Not suited for:** estimating how often each finding occurs in the real world, or strong claims about performance on charts from other renderers.
 
 1. **70% synthetic.** Balance forced this. Report real and synthetic performance separately.
 2. **Single-label by design.** Real charts often show several findings at once (a trend *and* an anomaly). Ambiguous candidates were discarded, so compound findings are under-represented.
 3. **Thresholds are conventions.** `|r| > 0.7` as "strong" and eta-squared > 0.14 as "large" follow common practice but are choices. They are recorded in `taxonomy.py` so results can be re-derived under other cuts.
-4. **One renderer.** matplotlib/seaborn only. No Excel, Plotly, D3 or hand-drawn charts, so cross-renderer generalisation is untested.
+4. **Mostly one renderer.** The main set is matplotlib/seaborn. Version 2 adds Plotly and Vega-Lite re-renders of the real test charts, which only partly addresses cross-renderer generalisation. No Excel, D3 or hand-drawn charts are included.
 5. **Artificial class priors.** Perfect balance is a training convenience; real finding frequencies are heavily skewed.
 6. **Very few real examples for some classes**, e.g. `rel_nonlinear_nonmonotonic` (9 real) and `ts_seasonal` (64 real).
 
@@ -207,7 +209,16 @@ Labels were re-verified by re-running the full test battery on the stored data t
 
 **Numerical reproducibility.** On a different scientific-Python build (measured on Kaggle vs the build machine's statsmodels 0.14.6 / scipy 1.18.0), the oracle reproduces about **99.95%** of labels, not 100%. The cause is boundary proximity, not data error: `rel_heteroscedastic` has the tightest guards, and its closest sample has `resid_spread_ratio` = 2.5054 against a 2.5 floor (a 0.2% margin), which a ~1e-4 change in the Breusch-Pagan statistic can tip. Such samples fail to `no_class_matched`, meaning they are dropped, never given a wrong class. Report the measured value and pin `statsmodels` / `scipy` for exact reproduction.
 
-## 11. Citation, licence, contact
+## 11. What changed in version 2
+
+| Change | Why |
+|---|---|
+| **No label-dependent marks** | Version 1 drew a trend line only on increasing/decreasing series, a vertical line only at change points, and circles only around anomalies. Models learned to read them. Version 2 draws none; the evidence stays in the metadata boxes. |
+| **Reproducible styles** | Style is chosen from a CRC32 hash of the sample id. Version 1 used Python's salted `hash()`, which changes between runs. |
+| **Dates on time axes** | Epoch-microsecond timestamps are now drawn as calendar dates. |
+| **Extra renders** | Plotly and Vega-Lite re-renders of the real test charts, plus training renders (Plotly, randomised matplotlib styles) for augmentation. |
+
+## 12. Citation
 
 **Citation**
 
@@ -225,3 +236,4 @@ Labels were re-verified by re-running the full test battery on the stored data t
 }
 ```
 
+- **Version:** 2
