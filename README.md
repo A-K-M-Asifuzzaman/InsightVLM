@@ -125,7 +125,7 @@ The class index, datasheet and bias-audit report are also in [`dataset/`](datase
 
 ## Team
 
-**Team Hocrux** — A K M Asifuzzman, Robiul, Fahim Ali, Iftehad, Md Arfat Yunus.
+**Team Hocrux** — A K M Asifuzzaman, Robiul Hasan Jisan, Fahim Khan Alif, Iftehad Kamal Iftee, Mohammad Arfat.
 Phitron AI/ML Thesis Track.
 
 ## Citation
@@ -133,7 +133,7 @@ Phitron AI/ML Thesis Track.
 ```bibtex
 @misc{insightvlm2026,
   title  = {InsightVLM-20K: Chart Images Paired with Statistically Verified Findings},
-  author = {Asifuzzman, A K M and Robiul and Ali, Fahim and Iftehad and Yunus, Md Arfat},
+  author = {Asifuzzaman, A K M and Jisan, Robiul Hasan and Alif, Fahim Khan and Iftee, Iftehad Kamal and Arfat, Mohammad},
   year   = {2026},
   url    = {https://github.com/A-K-M-Asifuzzaman/InsightVLM}
 }
